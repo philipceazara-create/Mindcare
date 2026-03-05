@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Neon Tetris</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap');
+
+body {
+    margin: 0;
+    font-family: 'Orbitron', sans-serif;
+    color: #0ff;
+    overflow: hidden;
+    background: radial-gradient(circle at center, #050010 0%, #000000 100%);
+}
+
+#universeCanvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -2;
+}
+
+/* Pages */
+#homePage, #gamePage {
+    position:absolute;
+    top:0; left:0;
+    width:100%;
+    height:100%;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    flex-direction:column;
+}
+
+#homePage {
+    background: rgba(0,0,0,0.6);
+}
+
+#homePage h1 {
+    font-size: 64px;
+    text-shadow: 0 0 10px #0ff, 0 0 20px #0ff;
+    margin-bottom: 50px;
+}
+
+.homeButtons {
+    display:flex;
+    gap:20px;
+    flex-direction:column;
+    align-items:center;
+}
+
+button {
+    padding: 20px 50px;
+    font-size: 24px;
+    color: #0ff;
+    background: transparent;
+    border: 2px solid #0ff;
+    border-radius: 12px;
+    cursor: pointer;
+    text-shadow: 0 0 5px #0ff;
+    transition: all 0.2s ease;
+}
+
+button:hover {
+    background: #0ff;
+    color: #111;
+    box-shadow: 0 0 20px #0ff;
+}
+
+/* Game */
+#gamePage {
+    display:none;
+    flex-direction: row;
+    gap:30px;
+    align-items:flex-start;
+}
+
+#tetris {
+    background: rgba(0,0,0,0.7);
+    border: 4px solid #0ff;
+    box-shadow: 0 0 20px #0ff;
+}
+
+.sidebar {
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:20px;
+}
+
+#scoreBoard {
+    background: rgba(0,0,0,0.5);
+    padding: 20px;
+    width:160px;
+    text-align:center;
+    border: 2px solid #0ff;
+    box-shadow: 0 0 15px #0ff;
+    border-radius:10px;
+}
+
+#nextPiece {
+    margin-top:15px;
+    background:#111;
+    width:120px;
+    height:120px;
+    border:2px solid #0ff;
+    box-shadow:0 0 10px #0ff;
+    border-radius:8px;
+}
+
+#gameOverOverlay {
+    position:absolute;
+    top:0; left:0;
+    width:100%; height:100%;
+    background: rgba(0,0,0,0.95);
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    color:#0ff;
+    font-size:32px;
+    text-align:center;
+    display:none;
+}
+</style>
+</head>
+
+<body>
+
+<canvas id="universeCanvas"></canvas>
+
+<!-- Home Page -->
+<div id="homePage">
+    <h1>NEON TETRIS</h1>
+    <div class="homeButtons">
+        <button id="startBtn">Start Game</button>
+        <button id="homeBtnStart1">Home</button>
+    </div>
+</div>
+
+<!-- Game Page -->
+<div id="gamePage">
+    <canvas id="tetris" width="360" height="720"></canvas>
+
+    <div class="sidebar">
+        <h2>Score</h2>
+        <div id="scoreBoard">
+            <div id="score">0</div>
+            <canvas id="nextPiece" width="120" height="120"></canvas>
+        </div>
+    </div>
+
+    <div id="gameOverOverlay">
+        <div>GAME OVER</div>
+        <button id="restartBtn">Restart</button>
+        <button id="homeBtn">Home</button>
+    </div>
+</div>
+
+<script>
+// ===== Universe Background =====
+const universeCanvas = document.getElementById('universeCanvas');
+const uctx = universeCanvas.getContext('2d');
+let stars = [];
+
+function resizeCanvas(){
+    universeCanvas.width=window.innerWidth;
+    universeCanvas.height=window.innerHeight;
+    initStars();
+}
+window.addEventListener('resize', resizeCanvas);
+resizeCanvas();
+
+function initStars(){
+    stars=[];
+    for(let i=0;i<200;i++){
+        stars.push({
+            x:Math.random()*universeCanvas.width,
+            y:Math.random()*universeCanvas.height,
+            size:Math.random()*2+0.5,
+            speed:Math.random()*0.2+0.05
+        });
+    }
+}
+
+function drawUniverse(){
+    uctx.clearRect(0,0,universeCanvas.width,universeCanvas.height);
+    stars.forEach(s=>{
+        uctx.fillStyle='#0ff';
+        uctx.shadowColor='#0ff';
+        uctx.shadowBlur=5;
+        uctx.beginPath();
+        uctx.arc(s.x,s.y,s.size,0,Math.PI*2);
+        uctx.fill();
+        s.y-=s.speed;
+        if(s.y<0){ s.y=universeCanvas.height; s.x=Math.random()*universeCanvas.width; }
+    });
+    requestAnimationFrame(drawUniverse);
+}
+drawUniverse();
+
+// ===== Page Switching =====
+const homePage = document.getElementById("homePage");
+const gamePage = document.getElementById("gamePage");
+
+document.getElementById("startBtn").addEventListener("click", ()=>{
+    homePage.style.display="none";
+    gamePage.style.display="flex";
+});
+
+// 🔥 HOME BUTTONS NOW WORK 🔥
+document.getElementById("homeBtnStart1").addEventListener("click", ()=>{
+    window.location.href = "Gamepage.html";
+});
+
+document.getElementById("homeBtn").addEventListener("click", ()=>{
+    window.location.href = "Gamepage.html";
+});
+
+// Restart Button
+document.getElementById("restartBtn").addEventListener("click", ()=>{
+    document.getElementById("gameOverOverlay").style.display="none";
+});
+
+</script>
+</body>
+</html>

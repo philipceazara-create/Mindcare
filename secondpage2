@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MindCare Landing Page</title>
+  <style>
+    /* Reset and base styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body, html {
+      height: 100%;
+      font-family: 'Arial', sans-serif; /* replace with actual font */
+      color: white;
+    }
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    /* Container for the entire hero / header area */
+    .hero {
+      position: relative;
+      width: 100%;
+      height: 100vh; /* full viewport height */
+      background: url('Background.jpg') no-repeat center center;
+      background-size: cover;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Top navigation bar */
+    .navbar {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 40px;
+      background: rgba(255,255,255,0.9); /* light translucent background */
+    }
+    .navbar .logo {
+      font-size: 32px;
+      font-weight: bold;
+      color: #2F7A2F; /* adjust to match MindCare greenish */
+    }
+    .navbar .nav-items {
+      display: flex;
+      align-items: center;
+    }
+    .navbar .nav-items > * {
+      margin-left: 30px;
+      font-size: 18px;
+      color: #2F7A2F; /* the same / similar green */
+      cursor: pointer;
+    }
+    .navbar .get-started {
+      padding: 10px 20px;
+      background-color: #2F7A2F; /* solid green */
+      color: white;
+      border-radius: 25px;
+    }
+
+    /* Hero text + content area */
+    .hero-content {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center; /* Center the content horizontally and vertically */
+      padding: 0 60px 60px 60px;
+    }
+    .hero-text {
+      max-width: 50%;
+      text-align: center; /* Center text within its container */
+    }
+    .hero-text h1 {
+      font-size: 60px;
+      line-height: 1.2;
+      font-weight: bold;
+      color: white;
+    }
+    .hero-text p {
+      margin-top: 20px;
+      font-size: 18px;
+      line-height: 1.6;
+      color: white;
+      opacity: 0.9;
+    }
+    .hero-links {
+      margin-top: 30px;
+      font-size: 20px;
+      display: flex;
+      gap: 40px;
+      justify-content: center; /* Center the links */
+    }
+    .hero-links a {
+      color: #A9FF9A; /* lighter green highlight, adjust as needed */
+      border-bottom: 2px solid #A9FF9A;
+      padding-bottom: 4px;
+    }
+
+    /* Centered Options Styles (Replaced form with clickable buttons) */
+    .options-container {
+      background-color: rgba(47, 122, 47, 0.8); /* Semi-transparent green to match theme */
+      padding: 30px;
+      border-radius: 20px;
+      max-width: 500px;
+      width: 100%;
+      text-align: center;
+    }
+    .options-container h1 {
+      font-size: 28px;
+      margin-bottom: 20px;
+      color: white;
+    }
+    .options-container label {
+      display: block;
+      margin-bottom: 15px;
+      font-size: 18px;
+      color: white;
+    }
+    .option-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      margin-top: 10px;
+    }
+    .option-btn {
+      padding: 15px 20px;
+      font-size: 16px;
+      background-color: rgba(255, 255, 255, 0.9);
+      color: #2F7A2F;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.3s;
+      text-align: left;
+      width: 100%;
+    }
+    .option-btn:hover {
+      background-color: white;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+    .option-btn:active {
+      transform: translateY(0);
+    }
+
+    /* Right side cards/icons (kept but adjusted for centering) */
+    .hero-icons {
+      display: flex;
+      gap: 30px;
+      margin-left: 50px; /* Adjust spacing if needed */
+    }
+    .icon-card {
+      width: 200px;
+      height: 200px;
+      background-color: rgba(47,122,47,0.7); /* semi-transparent dark green overlay */
+      border-radius: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .icon-inner {
+      width: 160px;
+      height: 160px;
+      background-color: rgba(47,122,47,0.9); /* slightly different shade */
+      border-radius: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .icon-inner img {
+      max-width: 80px;
+      max-height: 80px;
+    }
+
+    /* Optional overlay if needed to tint the background image greenish */
+    .overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 80, 0, 0.4); /* adjust color & opacity to get matching tint */
+      z-index: 0;
+    }
+    .hero-content, .navbar {
+      position: relative;
+      z-index: 1;
+    }
+  </style>
+</head>
+<body>
+  <div class="hero">
+    <div class="overlay"></div>
+    <div class="navbar">
+      <div class="logo">MindCare</div>
+      <div class="nav-items">
+        <div>Therapist</div>
+        <div>About</div>
+       
+      </div>
+    </div>
+    <div class="hero-content">
+      <!-- Centered Options (replaced form with clickable buttons) -->
+      <div class="hero-text">
+        <h1>Ask for help</h1>
+        <div class="options-container">
+          <label>Choose an option:</label>
+          <div class="option-buttons">
+            <button class="option-btn" data-option="1"><a href="Prevent.html">Give me some tips to prevent the Mental Health Issues</button></a>
+            <button class="option-btn" data-option="2">Professional Guidance</button>
+            <button class="option-btn" data-option="3">Coping & Self-Help</button>
+            <button class="option-btn" data-option="4">Emotional Support</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

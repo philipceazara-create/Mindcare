@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MindCare</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Inter',sans-serif;
+}
+
+body{
+    min-height:100vh;
+    background:
+        linear-gradient(rgba(0,0,0,0.35), rgba(0,0,0,0.35)),
+        url('https://images.unsplash.com/photo-1501785888041-af3ef285b470?q=80&w=2070&auto=format&fit=crop')
+        no-repeat center center/cover;
+    display:flex;
+    flex-direction:column;
+    color:white;
+}
+
+/* NAVBAR */
+.navbar{
+    position:fixed;
+    top:0;
+    width:100%;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:28px 60px;
+    background:rgba(255,255,255,0.08);
+    backdrop-filter:blur(18px);
+    border-bottom:1px solid rgba(255,255,255,0.15);
+    z-index:1000;
+}
+
+.logo{
+    font-size:24px;
+    font-weight:700;
+}
+
+nav a{
+    margin-left:35px;
+    text-decoration:none;
+    color:white;
+    font-weight:500;
+}
+
+/* HERO */
+.hero{
+    flex:1;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding-top:100px;
+}
+
+.card{
+    width:480px;
+    padding:55px 45px;
+    border-radius:28px;
+    background:rgba(255,255,255,0.12);
+    backdrop-filter:blur(25px);
+    box-shadow:0 30px 60px rgba(0,0,0,0.35);
+    text-align:center;
+}
+
+.card h1{
+    font-size:32px;
+    margin-bottom:12px;
+}
+
+.card p{
+    font-size:15px;
+    margin-bottom:35px;
+}
+
+/* BUTTONS */
+.buttons{
+    display:flex;
+    flex-direction:column;
+    gap:18px;
+}
+
+button{
+    position:relative;
+    overflow:hidden;
+    padding:16px 26px;
+    border-radius:50px;
+    font-size:15px;
+    font-weight:600;
+    cursor:pointer;
+    transition:all 0.35s ease;
+    border:1px solid rgba(255,255,255,0.18);
+    background:transparent;
+    color:white;
+}
+
+button:hover{
+    background:rgba(255,255,255,0.06);
+}
+
+/* PRIMARY BUTTON */
+.primary{
+    background:linear-gradient(135deg,#ffffff,#e8e8e8);
+    color:#222;
+    border:none;
+}
+
+.primary:hover{
+    transform:translateY(-6px);
+    box-shadow:0 0 25px rgba(255,255,255,0.6);
+}
+
+/* BOTTOM NAV */
+.bottom-nav{
+    position:fixed;
+    bottom:30px;
+    width:100%;
+    display:flex;
+    justify-content:space-between;
+    padding:0 60px;
+}
+
+.bottom-nav button{
+    background:rgba(255,255,255,0.15);
+}
+
+.bottom-nav button:hover{
+    background:rgba(255,255,255,0.35);
+}
+
+/* Ripple */
+button span.ripple{
+    position:absolute;
+    border-radius:50%;
+    transform:scale(0);
+    animation:ripple-animation 0.6s linear;
+    background:rgba(255,255,255,0.7);
+}
+
+@keyframes ripple-animation{
+    to{
+        transform:scale(4);
+        opacity:0;
+    }
+}
+
+@media(max-width:600px){
+    .card{width:90%;}
+    .navbar{padding:20px;}
+    .bottom-nav{padding:0 20px;}
+}
+</style>
+</head>
+<body>
+
+<header class="navbar">
+<div class="logo">MindCare</div>
+<nav>
+<a href="Therapist.html">Therapist</a>
+<a href="About.html">About</a>
+</nav>
+</header>
+
+<main class="hero">
+<div class="card">
+<h1>Ask for Help</h1>
+<p>Choose an option below:</p>
+
+<div class="buttons">
+<button class="primary" onclick="location.href='Prevent.html'">
+Give me tips to prevent Mental Health Issues
+</button>
+
+<button onclick="location.href='Professional Guidance.html'">
+Professional Guidance
+</button>
+
+<button onclick="location.href='Coping.html'">
+Coping & Self-Help
+</button>
+</div>
+
+</div>
+</main>
+
+<div class="bottom-nav">
+<button onclick="location.href='Frontpage.html'">Back</button>
+<button onclick="location.href='Frontpage.html'">Back to Homepage</button>
+</div>
+
+<script>
+document.querySelectorAll("button").forEach(button => {
+button.addEventListener("click", function(e) {
+
+const ripple = document.createElement("span");
+ripple.classList.add("ripple");
+
+const rect = button.getBoundingClientRect();
+const size = Math.max(rect.width, rect.height);
+
+ripple.style.width = ripple.style.height = size + "px";
+ripple.style.left = e.clientX - rect.left - size/2 + "px";
+ripple.style.top = e.clientY - rect.top - size/2 + "px";
+
+button.appendChild(ripple);
+
+setTimeout(() => {
+ripple.remove();
+}, 600);
+
+});
+});
+</script>
+
+</body>
+</html>

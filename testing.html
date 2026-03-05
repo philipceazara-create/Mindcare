@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MindCare Landing Page</title>
+  <style>
+    /* Reset and base styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body, html {
+      height: 100%;
+      font-family: 'Arial', sans-serif; /* replace with actual font */
+      color: white;
+    }
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    /* Container for the entire hero / header area */
+    .hero {
+      position: relative;
+      width: 100%;
+      height: 100vh; /* full viewport height */
+      background: url('Background.jpg') no-repeat center center;
+      background-size: cover;
+      display: flex;
+      flex-direction: column;
+      transition: opacity 0.5s ease; /* Smooth fade for page transitions */
+    }
+
+    /* Top navigation bar */
+    .navbar {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 40px;
+      background: rgba(255,255,255,0.9); /* light translucent background */
+      position: relative;
+      z-index: 10;
+    }
+    .navbar .logo {
+      font-size: 32px;
+      font-weight: bold;
+      color: #2F7A2F; /* adjust to match MindCare greenish */
+    }
+    .navbar .nav-items {
+      display: flex;
+      align-items: center;
+    }
+    .navbar .nav-items > * {
+      margin-left: 30px;
+      font-size: 18px;
+      color: #2F7A2F; /* the same / similar green */
+      cursor: pointer;
+    }
+    .navbar .get-started {
+      padding: 10px 20px;
+      background-color: #2F7A2F; /* solid green */
+      color: white;
+      border-radius: 25px;
+    }
+    .back-btn {
+      padding: 8px 16px;
+      background-color: rgba(255, 255, 255, 0.9);
+      color: #2F7A2F;
+      border: none;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 16px;
+      margin-right: auto;
+      display: none; /* Hidden by default */
+    }
+
+    /* Hero text + content area */
+    .hero-content {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center; /* Center the content horizontally and vertically */
+      padding: 0 60px 60px 60px;
+    }
+    .hero-text {
+      max-width: 50%;
+      text-align: center; /* Center text within its container */
+    }
+    .hero-text h1 {
+      font-size: 60px;
+      line-height: 1.2;
+      font-weight: bold;
+      color: white;
+    }
+    .hero-text p {
+      margin-top: 20px;
+      font-size: 18px;
+      line-height: 1.6;
+      color: white;
+      opacity: 0.9;
+    }
+    .hero-links {
+      margin-top: 30px;
+      font-size: 20px;
+      display: flex;
+      gap: 40px;
+      justify-content: center; /* Center the links */
+    }
+    .hero-links a {
+      color: #A9FF9A; /* lighter green highlight, adjust as needed */
+      border-bottom: 2px solid #A9FF9A;
+      padding-bottom: 4px;
+    }
+
+    /* Centered Options Styles (Replaced form with clickable buttons) */
+    .options-container {
+      background-color: rgba(47, 122, 47, 0.8); /* Semi-transparent green to match theme */
+      padding: 30px;
+      border-radius: 20px;
+      max-width: 500px;
+      width: 100%;
+      text-align: center;
+    }
+    .options-container h1 {
+      font-size: 28px;
+      margin-bottom: 20px;
+      color: white;
+    }
+    .options-container label {
+      display: block;
+      margin-bottom: 15px;
+      font-size: 18px;
+      color: white;
+    }
+    .option-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      margin-top: 10px;
+    }
+    .option-btn {
+      padding: 15px 20px;
+      font-size: 16px;
+      background-color: rgba(255, 255, 255, 0.9);
+      color: #2F7A2F;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.3s;
+      text-align: left;
+      width: 100%;
+    }
+    .option-btn:hover {
+      background-color: white;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+    .option-btn:active {
+      transform: translateY(0);
+    }
+
+    /* Right side cards/icons (kept but adjusted for centering) */
+    .hero-icons {
+      display: flex;
+      gap: 30px;
+      margin-left: 50px; /* Adjust spacing if needed */
+    }
+    .icon-card {
+      width: 200px;
+      height: 200px;
+      background-color: rgba(47,122,47,0.7); /* semi-transparent dark green overlay */
+      border-radius: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .icon-inner {
+      width: 160px;
+      height: 160px;
+      background-color: rgba(47,122,47,0.9); /* slightly different shade */
+      border-radius: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .icon-inner img {
+      max-width: 80px;
+      max-height: 80px;
+    }
+
+    /* Optional overlay if needed to tint the background image greenish */
+    .overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 80, 0, 0.4); /* adjust color & opacity to get matching tint */
+      z-index: 0;
+    }
+    .hero-content, .navbar {
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Second Page: Therapist Details Section (Initially Hidden) */
+    .therapist-details {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100vh;
+      background: url('Background.jpg') no-repeat center center;
+      background-size: cover;
+      display: none; /* Hidden by default */
+      flex-direction: column;
+      z-index: 5;
+      opacity: 0;
+      transition: opacity 0.5s ease;
+    }
+    .therapist-details.active {
+      display: flex;
+      opacity: 1;
+    }
+    .therapist-details .overlay {
+      z-index: 0;
+    }
+    .therapist-content {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 60px 60px 60px;
+      position: relative;
+      z-index: 1;
+    }
+    .therapist-info {
+      background-color: rgba(47, 122, 47, 0.9);
+      padding: 40px;
+      border-radius: 20px;
+      max-width: 600px;
+      width: 100%;
+      text-align: center;
+    }
+    .therapist-info h1 {
+      font-size: 48px;
+      margin-bottom: 20px;
+      color: white;
+    }
+    .therapist-info p {
+      font-size: 18px;
+      line-height: 1.6;
+      margin-bottom: 15px;
+      color: white;
+      opacity: 0.95;
+    }
+    .therapist-info .contact {
+      background-color: rgba(255, 255, 255, 0.2);
+      padding: 15px;
+      border-radius: 10px;
+      margin-top: 20px;
+      font-size: 16px;
+    }
+    .back-btn {
+      position: absolute;
+      top: 20px;
+      left: 40px;
+      z-index: 2;
+    }
+  </style>
+</head>
+<body>
+  <div class="hero">
+    <div class="overlay"></div>
+    <div class="navbar">
+      <button class="back-btn" onclick="showMainPage()">← Back to List</button>
+      <div class="logo">MindCare</div>
+      <div class="nav-items">
+        <div>Therapist</div>
+        <div>About</div>
+      </div>
+    </div>
+    <div class="hero-content">
+      <!-- Centered Options (replaced form with clickable buttons) -->
+      <div class="hero-text">
+        <h1>List of Therapist</h1>
+        <div class="options-container">
+          <div class="option-buttons">
+            <button class="option-btn" data-option="1" onclick="showTherapistDetails(1)">Espada Psychological Consultancy</button>
+            <button class="option-btn" data-option="2" onclick="showTherapistDetails(2)">PHILIPPINE MENTAL HEALTH ASSOCIATION</button>
+            <button class="option-btn" data-option="3" onclick="showTherapistDetails(3)">Bright Space Behavioral Therapy</button>
+            <button class="option-btn" data-option="4" onclick="showTherapistDetails(4)">Lily and Co</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Second Page: Therapist Details (Overlays the main page) -->
+  <div class="therapist-details" id="therapistDetails">
+    <div class="overlay"></div>
+    <div class="navbar">
+      <button class="back-btn" onclick="showMainPage()">← Back to List</button>
+      <div class="logo">MindCare</div>
+      <div class="nav-items">
+        <div>Therapist</div>
+        <div>About</div>
+      </div>
+    </div>
+    <div class="therapist-content">
+      <div class="therapist-info" id="therapistInfo">
+        <!-- Dynamic content will be inserted here by JavaScript -->
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Therapist data (expand as needed)
+    const therapistData = {
+      1: {
+        name: "Espada Psychological Consultancy",
+        description: "Espada Psychological Consultancy specializes in cognitive behavioral therapy (CBT), family counseling, and stress management. Our team of licensed psychologists provides personalized sessions to help you navigate life's challenges with empathy and expertise.",
+        services: "Services: Individual therapy, couples counseling, group sessions.",
+        contact: "Contact: info@espada.com | Phone: (02) 987-6543 | Location: Manila, Philippines"
+      },
+      2: {
+        name: "PHILIPPINE MENTAL HEALTH ASSOCIATION",
+        description: "The Philippine Mental Health Association (PMHA) is a non-profit organization dedicated to promoting mental health awareness, advocacy, and accessible services across the country. We offer crisis intervention, educational programs, and community support.",
+        services: "Services: Hotlines, workshops, advocacy programs.",
+        contact: "Contact: pmha@mentalhealth.ph | Phone: 02-123-4567 | Website: pmha.org"
+      },
+      3: {
+        name: "Bright Space Behavioral Therapy",
+        description: "Bright Space focuses on behavioral therapy for children, adolescents, and families. Using evidence-based approaches like ABA (Applied Behavior Analysis), we help address developmental challenges, autism spectrum disorders, and emotional regulation.",
+        services: "Services: Child therapy, parent training, school consultations.",
+        contact: "Contact: brightspace@therapy.ph | Phone: (02) 555-0123 | Location: Quezon City"
+      },
+      4: {
+        name: "Lily and Co",
+        description: "Lily and Co offers holistic counseling services tailored for women, families, and individuals seeking work-life balance. Our therapists emphasize mindfulness, trauma recovery, and personal growth in a supportive environment.",
+        services: "Services: Women's health counseling, family therapy, wellness coaching.",
+        contact: "Contact: hello@lilyandco.ph | Phone: (02) 777-8888 | Location: Makati"
+      }
+    };
+
+    function showTherapistDetails(option) {
+      const data = therapistData[option];
+      if (!data) return;
+
+      // Populate the details
+      const infoDiv = document.getElementById('therapistInfo');
+      infoDiv.innerHTML = `
+        <h1>${data.name}</h1>
+        <p>${data.description}</p>
+        <p><strong>${data.services}</strong></p>
+        <div class="contact">
+          <strong>${data.contact}</strong>
+        </div>
+        <button onclick="showMainPage()" style="margin-top: 20px; padding: 10px 20px; background: white; color: #2F7A2F; border: none; border-radius: 10px; cursor: pointer;">Back to List</button>
+      `;
+
+      // Hide main page and show details page
+      document.querySelector('.hero').style.opacity = '0';
+      document.getElementById('therapistDetails').classList.add('active');
+      document.querySelectorAll('.back-btn').forEach(btn => btn.style.display = 'inline-block');
+    }
+
+    function showMainPage() {
+      // Show main page and hide details
+      document.querySelector('.hero').style.opacity = '1';
+      document.getElementById('therapistDetails').classList.remove('active');
+      document.querySelectorAll('.back-btn').forEach(btn => btn.style.display = 'none');
+      document.getElementById('therapistInfo').innerHTML = ''; // Clear content
+    }
+  </script>
+</body>
+</html>

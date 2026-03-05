@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>MindCare | Professional Guidance</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
+
+body{
+    min-height:100vh;
+    background:url("forestpon.jpg") no-repeat center/cover;
+    position:relative;
+    color:white;
+}
+
+/* Soft dark overlay */
+body::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:rgba(0,0,0,0.35);
+    backdrop-filter:blur(3px);
+    z-index:-1;
+}
+
+/* ===== GLASS NAVBAR ===== */
+header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:25px 60px;
+    background:rgba(255,255,255,0.15);
+    backdrop-filter:blur(15px);
+}
+
+header h1{
+    font-size:28px;
+    font-weight:700;
+    color:white;
+}
+
+header nav a{
+    margin-left:40px;
+    text-decoration:none;
+    color:white;
+    font-weight:500;
+    transition:0.3s;
+}
+
+header nav a:hover{
+    opacity:0.7;
+}
+
+/* ===== HERO TITLE ===== */
+.hero{
+    text-align:center;
+    padding:70px 20px 40px;
+}
+
+.hero h2{
+    font-size:48px;
+    margin-bottom:10px;
+}
+
+/* ===== PATH GRID ===== */
+.paths{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:35px;
+    max-width:1200px;
+    margin:50px auto 120px;
+    padding:0 40px;
+}
+
+/* ===== GLASS CARD ===== */
+.path{
+    position:relative;
+    height:320px;
+    border-radius:30px;
+    background:rgba(255,255,255,0.15);
+    backdrop-filter:blur(18px);
+    overflow:hidden;
+    cursor:pointer;
+    transition:0.4s ease;
+}
+
+.path:hover{
+    transform:translateY(-12px);
+    box-shadow:0 25px 60px rgba(0,0,0,0.5);
+}
+
+/* Soft glow */
+.path::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:radial-gradient(circle at top left,
+        rgba(255,255,255,0.4), transparent 60%);
+    opacity:0;
+    transition:0.4s;
+}
+
+.path:hover::after{
+    opacity:1;
+}
+
+/* FRONT & BACK */
+.front,.back{
+    position:absolute;
+    inset:0;
+    padding:30px;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+    transition:0.4s;
+}
+
+.front h3{
+    font-size:22px;
+}
+
+.back{
+    opacity:0;
+    transform:translateY(20px);
+}
+
+.path:hover .front{
+    opacity:0;
+}
+
+.path:hover .back{
+    opacity:1;
+    transform:translateY(0);
+}
+
+.back p{
+    line-height:1.6;
+    margin-bottom:8px;
+    opacity:0.95;
+}
+
+/* ===== FLOATING GLASS BACK BUTTONS ===== */
+.bottom-buttons{
+    position:fixed;
+    bottom:30px;
+    left:40px;
+    right:40px;
+    display:flex;
+    justify-content:space-between;
+}
+
+.back-button{
+    padding:14px 30px;
+    border-radius:40px;
+    background:rgba(255,255,255,0.2);
+    color:white;
+    text-decoration:none;
+    backdrop-filter:blur(10px);
+    font-weight:500;
+    transition:0.3s;
+}
+
+.back-button:hover{
+    background:rgba(255,255,255,0.35);
+    transform:translateY(-4px);
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <h1>MindCare</h1>
+    <nav>
+        <a href="Therapist.html">Therapist</a>
+        <a href="About.html">About</a>
+    </nav>
+</header>
+
+<section class="hero">
+    <h2>Professional Guidance</h2>
+</section>
+
+<section class="paths">
+
+    <div class="path">
+        <div class="front">
+            <h3>Acknowledge and Identify</h3>
+        </div>
+        <div class="back">
+            <p>Recognize changes in mood, sleep, appetite, motivation, or thoughts.</p>
+            <p>Common signs: persistent sadness, anxiety, loss of interest, irritability, or difficulty functioning in school/work/home.</p>
+        </div>
+    </div>
+
+    <div class="path">
+        <div class="front">
+            <h3>Healthy Coping Strategies</h3>
+        </div>
+        <div class="back">
+            <p>Routine: Keep a structured daily schedule.</p>
+            <p>Mindfulness/Relaxation: Deep breathing, meditation, or journaling to manage stress.</p>
+        </div>
+    </div>
+
+    <div class="path">
+        <div class="front">
+            <h3>Seek Professional Help</h3>
+        </div>
+        <div class="back">
+            <p>Consult a psychologist, psychiatrist, counselor, or social worker.</p>
+            <p>A doctor can provide proper diagnosis and treatment (therapy, medication, lifestyle changes).</p>
+        </div>
+    </div>
+
+    <div class="path">
+        <div class="front">
+            <h3>Self Health Practices</h3>
+        </div>
+        <div class="back">
+            <p>Break large tasks into smaller manageable steps.</p>
+            <p>Limit alcohol, caffeine, and substances that worsen stress or mood swings.</p>
+        </div>
+    </div>
+
+</section>
+
+<div class="bottom-buttons">
+    <a href="secondpage.html" class="back-button">← Back</a>
+    <a href="Frontpage.html" class="back-button">🏠 Back to Homepage</a>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>MindCare | Choose Your Path</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Segoe UI", Arial, sans-serif;
+}
+
+body {
+    background: linear-gradient(rgba(0,30,25,0.55), rgba(0,30,25,0.55)),
+                url("forestpon.jpg") no-repeat center/cover;
+    min-height: 100vh;
+    color: #fff;
+    overflow-x: hidden;
+}
+
+/* ================= NAVBAR ================= */
+
+header {
+    padding: 20px 60px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(255,255,255,0.08);
+    backdrop-filter: blur(15px);
+    border-bottom: 1px solid rgba(255,255,255,0.15);
+}
+
+header h1 {
+    font-size: 28px;
+    color: #ffffff;
+    font-weight: 600;
+}
+
+header nav a {
+    margin-left: 35px;
+    color: #ffffff;
+    text-decoration: none;
+    font-weight: 500;
+    transition: 0.3s ease;
+    position: relative;
+}
+
+header nav a::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -6px;
+    width: 0%;
+    height: 2px;
+    background: white;
+    transition: 0.3s ease;
+}
+
+header nav a:hover::after {
+    width: 100%;
+}
+
+/* ================= HERO ================= */
+
+.hero {
+    text-align: center;
+    padding: 80px 20px 40px;
+}
+
+.hero h2 {
+    font-size: 44px;
+    margin-bottom: 12px;
+    font-weight: 600;
+}
+
+.hero p {
+    font-size: 18px;
+    opacity: 0.85;
+}
+
+/* ================= PATH CARDS ================= */
+
+.paths {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 35px;
+    max-width: 1100px;
+    margin: 60px auto;
+    padding: 0 30px;
+}
+
+.path {
+    position: relative;
+    height: 300px;
+    border-radius: 30px;
+    overflow: hidden;
+    background: rgba(255,255,255,0.08);
+    backdrop-filter: blur(18px);
+    border: 1px solid rgba(255,255,255,0.15);
+    cursor: pointer;
+    transition: all 0.4s ease;
+}
+
+.path:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 25px 60px rgba(0,0,0,0.4);
+}
+
+.front, .back {
+    position: absolute;
+    inset: 0;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    transition: 0.4s ease;
+}
+
+.front h3 {
+    font-size: 22px;
+}
+
+.back {
+    opacity: 0;
+    transform: translateY(20px);
+}
+
+.path:hover .front {
+    opacity: 0;
+}
+
+.path:hover .back {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.back p {
+    line-height: 1.6;
+    opacity: 0.9;
+}
+
+/* ================= ENHANCED EXAMPLE BUTTON ================= */
+
+.path .back button {
+    margin-top: 15px;
+    padding: 10px 22px;
+    border-radius: 25px;
+    border: 1px solid rgba(120, 255, 180, 0.6);
+    background: rgba(0, 255, 150, 0.12);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    color: #b9ffd9;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.path .back button a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.path .back button:hover {
+    background: rgba(0, 255, 150, 0.25);
+    border: 1px solid rgba(120, 255, 180, 0.9);
+    box-shadow: 0 0 20px rgba(0, 255, 150, 0.35);
+    transform: translateY(-3px);
+}
+
+/* ================= BOTTOM BUTTONS ================= */
+
+.bottom-buttons {
+    display: flex;
+    justify-content: space-between;
+    padding: 40px 60px;
+}
+
+.back-button {
+    padding: 12px 28px;
+    border-radius: 30px;
+    border: 1px solid rgba(255,255,255,0.25);
+    background: rgba(255,255,255,0.1);
+    backdrop-filter: blur(10px);
+    color: white;
+    font-size: 15px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.back-button:hover {
+    background: rgba(255,255,255,0.2);
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+}
+
+</style>
+</head>
+
+<body>
+
+<header>
+    <h1>MindCare</h1>
+    <nav>
+        <a href="Therapist.html">Therapist</a>
+        <a href="About.html">About</a>
+    </nav>
+</header>
+
+<section class="hero">
+    <h2>Mindfulness & Relaxation</h2>
+    <p>Peace comes from within. Do not seek it without.</p>
+</section>
+
+<section class="paths">
+
+    <div class="path">
+        <div class="front">
+            <h3>Deep Breathing Exercises</h3>
+        </div>
+        <div class="back">
+            <p>Intentional slow breathing, like inhaling for four counts, holding, and exhaling, to activate relaxation, reduce stress, and improve oxygen flow.</p>
+            <button><a href="MREpics1.html">Example</a></button>
+        </div>
+    </div>
+
+    <div class="path">
+        <div class="front">
+            <h3>Progressive Muscle Relaxation</h3>
+        </div>
+        <div class="back">
+            <p>Systematically tensing and releasing muscle groups from toes to head to build awareness, reduce physical tension, and aid anxiety or insomnia.</p>
+            <button><a href="MREpics2.html">Example</a></button>
+        </div>
+    </div>
+
+    <div class="path">
+        <div class="front">
+            <h3>Body Scan Meditation</h3>
+        </div>
+        <div class="back">
+            <p>Mentally scanning the body from head to toe while observing sensations without judgment, promoting relaxation, awareness, and stress relief.</p>
+            <button><a href="MREpics3.html">Example</a></button>
+        </div>
+    </div>
+
+    <div class="path">
+        <div class="front">
+            <h3>Guided Visualization</h3>
+        </div>
+        <div class="back">
+            <p>Imagining peaceful scenes or positive outcomes with guidance to lower anxiety, enhance focus, and evoke calm.</p>
+            <button><a href="MREpics4.html">Example</a></button>
+        </div>
+    </div>
+
+    <div class="path">
+        <div class="front">
+            <h3>Mindful Stretching</h3>
+        </div>
+        <div class="back">
+            <p>Gentle stretching with attention to breath and sensations, improving flexibility, reducing tightness, and fostering mental clarity.</p>
+            <button><a href="MREpics5.html">Example</a></button>
+        </div>
+    </div>
+
+    <div class="path">
+        <div class="front">
+            <h3>Loving-Kindness Meditation</h3>
+        </div>
+        <div class="back">
+            <p>Repeating compassionate phrases for oneself and others to cultivate empathy, reduce negativity, and build emotional resilience.</p>
+            <button><a href="MREpics6.html">Example</a></button>
+        </div>
+    </div>
+
+</section>
+
+<div class="bottom-buttons">
+    <a href="Exercise.html"><button class="back-button">← Back</button></a>
+    <a href="Frontpage.html"><button class="back-button">🏠 Back to the Homepage</button></a>
+</div>
+
+</body>
+</html>

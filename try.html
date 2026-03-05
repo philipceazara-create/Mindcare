@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MindCare Dashboard</title>
+<style>
+body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: #e0f2f1;
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    gap: 30px;
+}
+
+/* ===== DAILY GRATITUDE CARD ===== */
+.card {
+    background: linear-gradient(135deg, #fff9c4, #b2dfdb);
+    padding: 35px;
+    border-radius: 25px;
+    max-width: 600px;
+    width: 100%;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 50px rgba(0,0,0,0.25);
+}
+.card h2 {
+    text-align: center;
+    color: #00796b;
+    font-size: 28px;
+}
+.card p {
+    text-align: center;
+    color: #004d40;
+    font-weight: 500;
+}
+.gratitude-inputs {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+.input-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: #ffffffaa;
+    border-radius: 15px;
+    padding: 10px 15px;
+    transition: box-shadow 0.3s;
+}
+.input-group input {
+    flex: 1;
+    border: none;
+    outline: none;
+    font-size: 16px;
+    background: transparent;
+}
+.input-group:hover {
+    box-shadow: 0 5px 15px rgba(0,77,64,0.3);
+}
+.card button {
+    padding: 15px 0;
+    border-radius: 20px;
+    background: linear-gradient(45deg, #00796b, #004d40);
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    border: none;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+.card button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+}
+#gratitudeList {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    list-style: none;
+}
+#gratitudeList li {
+    background: #ffffffaa;
+    padding: 8px 12px;
+    border-radius: 15px;
+    font-weight: bold;
+    color: #004d40;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+#gratitudeList li::before {
+    content: "✨";
+}
+.streak-container {
+    height: 20px;
+    border-radius: 15px;
+    background: #b2dfdb;
+    overflow: hidden;
+    margin-top: 10px;
+}
+.streak-bar {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, #ff9800, #f44336);
+    border-radius: 15px;
+    transition: width 1s ease-in-out;
+}
+#streak {
+    margin-top: 5px;
+    text-align: center;
+    font-weight: bold;
+    color: #004d40;
+}
+
+/* ===== COLLAPSIBLE STRESS TRACKER ===== */
+#stressToggle {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: #00796b;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 55px; height: 55px;
+    cursor: pointer;
+    font-size: 26px;
+    z-index: 1000;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    transition: transform 0.3s;
+}
+#stressToggle:hover { transform: scale(1.1); }
+
+#stressCard {
+    position: fixed;
+    top: 20px;
+    right: -300px; /* hidden offscreen */
+    width: 260px;
+    background: #ffffff;
+    padding: 25px;
+    border-radius: 20px;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.25);
+    z-index: 999;
+    transition: right 0.5s ease-in-out;
+    display: flex;
+    flex-direction: column;
+}
+#stressCard.show { right: 20px; }
+
+#stressCard h3 { margin-top: 0; color: #00796b; text-align: center; }
+.stress-bar-container { width: 100%; background: #b2dfdb; border-radius: 20px; height: 15px; overflow: hidden; margin-top: 5px; }
+.stress-bar { height: 100%; width: 50%; background: linear-gradient(to right, #ff9800, #f44336); border-radius: 20px; transition: width 0.5s; }
+#stressAdvice { margin-top: 10px; font-size: 14px; text-align: center; color: #004d40; }
+
+/* ===== CHAT ===== */
+.chat-modal {
+    position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+    width: 400px; max-width: 90%; display: none; z-index: 9999;
+}
+.chat-box {
+    background: rgba(255,255,255,0.95);
+    border-radius: 20px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+}
+.chat-header { background: #00796b; color: white; padding: 12px; font-weight: bold; display: flex; justify-content: space-between; align-items: center; border-radius: 15px 15px 0 0; }
+.chat-header button { background: none; border: none; color: white; font-size: 20px; cursor: pointer; }
+.chat-messages { flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; padding: 10px; margin-bottom: 10px; max-height: 300px; }
+.bot-message { background: #b2dfdb; padding: 10px; border-radius: 10px; align-self: flex-start; color: #004d40; }
+.user-message { background: #004d40; padding: 10px; border-radius: 10px; align-self: flex-end; color: white; }
+.chat-input { display: flex; }
+.chat-input input { flex: 1; padding: 10px; border-radius: 10px 0 0 10px; border: 1px solid #b2dfdb; outline: none; }
+.chat-input button { padding: 10px; border-radius: 0 10px 10px 0; border: none; background: #00796b; color: white; cursor: pointer; }
+
+.bottom-buttons{
+    position:fixed;
+    bottom:30px;
+    left:40px;
+    right:40px;
+    display:flex;
+    justify-content:space-between;
+}
+
+.back-button{
+    padding:14px 30px;
+    border-radius:40px;
+    background:rgba(59, 134, 64, 0.473);
+    color:white;
+    text-decoration:none;
+    backdrop-filter:blur(10px);
+    font-weight:500;
+    transition:0.3s;
+}
+
+.back-button:hover{
+    background:rgba(255,255,255,0.35);
+    transform:translateY(-4px);
+}
+</style>
+</head>
+<body>
+
+<!-- Collapsible Stress Button -->
+<button id="stressToggle">🧘</button>
+
+<!-- Stress Card -->
+<div id="stressCard">
+    <h3>Stress Level</h3>
+    <input type="range" id="stressSlider" min="0" max="10" value="5">
+    <div>Current Stress: <span id="stressValue">5</span>/10</div>
+    <div class="stress-bar-container"><div class="stress-bar" id="stressBar"></div></div>
+    <div id="stressAdvice"></div>
+</div>
+
+<!-- Daily Gratitude Card -->
+<div class="card gratitude-card">
+  <h2>🌈 Daily Gratitude</h2>
+  <p>Reflect on 3 things you’re thankful for today:</p>
+  <div class="gratitude-inputs">
+    <div class="input-group"><span>🌟</span><input type="text" id="grat1" placeholder="1. Something good today..." /></div>
+    <div class="input-group"><span>🌟</span><input type="text" id="grat2" placeholder="2. Something good today..." /></div>
+    <div class="input-group"><span>🌟</span><input type="text" id="grat3" placeholder="3. Something good today..." /></div>
+  </div>
+  <button onclick="saveGratitude()">💾 Save Gratitude</button>
+  <ul id="gratitudeList"></ul>
+  <div class="streak-container"><div class="streak-bar" id="streakBar"></div></div>
+  <div id="streak"></div>
+</div>
+
+<!-- Chat Modal -->
+<div class="chat-modal">
+  <div class="chat-box">
+    <div class="chat-header">Talk Now <button id="closeChat">&times;</button></div>
+    <div class="chat-messages" id="chatMessages">
+      <div class="bot-message">Hi! I'm here for you 💙 How are you feeling today?</div>
+    </div>
+    <div class="chat-input">
+      <input type="text" id="userInput" placeholder="Type your message..." />
+      <button onclick="sendMessage()">Send</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ===== Gratitude Logic =====
+function saveGratitude() {
+    const grat1 = document.getElementById("grat1").value.trim();
+    const grat2 = document.getElementById("grat2").value.trim();
+    const grat3 = document.getElementById("grat3").value.trim();
+    if(!grat1 && !grat2 && !grat3) return;
+
+    const today = new Date().toDateString();
+    const stored = JSON.parse(localStorage.getItem("gratitudeData")) || {};
+    stored[today] = [grat1, grat2, grat3].filter(g => g);
+    localStorage.setItem("gratitudeData", JSON.stringify(stored));
+    displayGratitude();
+}
+
+function displayGratitude() {
+    const today = new Date().toDateString();
+    const stored = JSON.parse(localStorage.getItem("gratitudeData")) || {};
+    const list = document.getElementById("gratitudeList");
+    list.innerHTML = "";
+    if(stored[today]) stored[today].forEach(item => { const li=document.createElement("li"); li.textContent=item; list.appendChild(li); });
+
+    let streak = 0;
+    const days = Object.keys(stored).sort();
+    for(let i=days.length-1;i>=0;i--){
+        const day=new Date(days[i]);
+        const yesterday=new Date(); yesterday.setDate(new Date().getDate()-streak);
+        if(day.toDateString()===yesterday.toDateString()) streak++; else break;
+    }
+    document.getElementById("streak").textContent = `🔥 Current Gratitude Streak: ${streak} day(s)`;
+    document.getElementById("streakBar").style.width = Math.min(streak*10,100)+"%";
+}
+displayGratitude();
+
+// ===== Collapsible Stress Logic =====
+const stressToggle = document.getElementById("stressToggle");
+const stressCard = document.getElementById("stressCard");
+stressToggle.addEventListener("click", () => stressCard.classList.toggle("show"));
+
+// Stress Slider
+const stressSlider = document.getElementById("stressSlider");
+const stressValue = document.getElementById("stressValue");
+const stressAdvice = document.getElementById("stressAdvice");
+const stressBar = document.getElementById("stressBar");
+stressSlider.addEventListener("input", ()=>{
+    const val = stressSlider.value;
+    stressValue.textContent = val;
+    stressBar.style.width=(val*10)+"%";
+    if(val<=3) stressAdvice.textContent="👍 You seem relaxed. Keep it up!";
+    else if(val<=6) stressAdvice.textContent="🌿 Take a few deep breaths to stay calm.";
+    else if(val<=7) stressAdvice.textContent="💧 Try a short walk or grounding exercise.";
+    else { stressAdvice.textContent="💛 High stress detected! Opening grounding exercise..."; openChat(); startGrounding(); }
+});
+
+// ===== Chat Logic =====
+const chatModal = document.querySelector(".chat-modal");
+const chatMessages = document.getElementById("chatMessages");
+const userInput = document.getElementById("userInput");
+const closeChat = document.getElementById("closeChat");
+closeChat.addEventListener("click", ()=> chatModal.style.display="none");
+
+let conversationState="normal",groundingStep=0,currentCount=0;
+const steps=[
+    {prompt:"Name 5 things you can **see**.",count:5},
+    {prompt:"Name 4 things you can **feel**.",count:4},
+    {prompt:"Name 3 things you can **hear**.",count:3},
+    {prompt:"Name 2 things you can **smell**.",count:2},
+    {prompt:"Name 1 thing you can **taste**.",count:1}
+];
+
+function addBotMessage(text){const div=document.createElement("div");div.classList.add("bot-message");div.innerHTML=text;chatMessages.appendChild(div);chatMessages.scrollTop=chatMessages.scrollHeight;}
+function addUserMessage(text){const div=document.createElement("div");div.classList.add("user-message");div.textContent=text;chatMessages.appendChild(div);chatMessages.scrollTop=chatMessages.scrollHeight;}
+function sendMessage(){const message=userInput.value.trim();if(!message)return;addUserMessage(message);userInput.value="";if(conversationState==="grounding") handleGroundingInput();else handleConversation(message);}
+userInput.addEventListener("keypress", e=>{if(e.key==="Enter") sendMessage();});
+
+function handleConversation(text){text=text.toLowerCase();if(text.includes("anxious")||text.includes("panic")||text.includes("overwhelmed")){startGrounding();return;}addBotMessage("💙 I'm here to listen. Tell me more.");}
+function openChat(){chatModal.style.display="flex";}
+function startGrounding(){conversationState="grounding";groundingStep=1;currentCount=0;chatMessages.innerHTML="";addBotMessage("Let's start a grounding exercise 🌿");setTimeout(showGroundingStep,800);}
+function showGroundingStep(){const step=steps[groundingStep-1];addBotMessage(step.prompt+` (${step.count} items)`);}
+function handleGroundingInput(){currentCount++;const step=steps[groundingStep-1];if(currentCount<step.count) addBotMessage(`Got it! ${step.count-currentCount} more...`);else{addBotMessage("Great! ✅");groundingStep++;currentCount=0;if(groundingStep<=steps.length) setTimeout(showGroundingStep,800);else{addBotMessage("🌿 Exercise complete! Take a slow breath in... and out. Feel calmer 💛");conversationState="normal";groundingStep=0;}}}
+</script>
+<div class="bottom-buttons">
+    
+    <a href="Frontpage.html" class="back-button">🏠 Back to Homepage</a>
+</div>
+</body>
+</html>
