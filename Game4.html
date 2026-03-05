@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wordscape Game</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; margin: 20px; }
+        #letters { font-size: 24px; margin: 20px; }
+        input { padding: 10px; font-size: 16px; }
+        button { padding: 10px 20px; margin: 5px; cursor: pointer; }
+        #foundWords { list-style-type: none; padding: 0; }
+        #foundWords li { margin: 5px; }
+    </style>
+</head>
+<body>
+    <h1>Wordscape Game</h1>
+    <p id="level">Level: 1</p>
+    <p>Scrambled Letters: <span id="letters"></span></p>
+    <p>Score: <span id="score">0</span></p>
+    <input type="text" id="wordInput" placeholder="Enter a word">
+    <button onclick="submitWord()">Submit Word</button>
+    <br>
+    <button onclick="restartGame()">Restart</button>
+    <button onclick="resetGame()">Reset</button>
+    <button id="nextLevelBtn" onclick="nextLevel()" disabled>Next Level</button>
+    <h3>Found Words:</h3>
+    <ul id="foundWords"></ul>
+
+    <script>
+        // Small dictionary (expand as needed)
+        const dictionary = new Set(["cat", "bat", "hat", "rat", "art", "car", "tar", "act", "tab", "bath", "chat", "cart", "chart", "crab", "grab", "brat", "bach", "bachat", "stare", "rates", "tears", "aster", "taser", "sater", "extra", "taxer", "exert", "terra", "rater", "tarts"]);
+
+        let currentLetters = "";
+        let score = 0;
+        let level = 1;
+        let foundWords = new Set();
+
+        function generateLetters(num) {
+            const alphabet = "abcdefghijklmnopqrstuvwxyz";
+            let letters = "";
+            for (let i = 0; i < num; i++) {
+                letters += alphabet[Math.floor(Math.random() * alphabet.length)];
+            }
+            return letters;
+        }
+
+        function newGame() {
+            const numLetters = 6 + level; // Level 1: 7 letters, etc.
+            currentLetters = generateLetters(numLetters);
+            document.getElementById("letters").textContent = currentLetters.toUpperCase().split("").join(" ");
+            score = 0;
+            document.getElementById("score").textContent = score;
+            document.getElementById("level").textContent = "Level: " + level;
+            foundWords.clear();
+            document.getElementById("foundWords").innerHTML = "";
+            document.getElementById("wordInput").value = "";
+            document.getElementById("nextLevelBtn").disabled = true;
+        }
+
+        function resetGame() {
+            score = 0;
+            document.getElementById("score").textContent = score;
+            foundWords.clear();
+            document.getElementById("foundWords").innerHTML = "";
+            document.getElementById("wordInput").value = "";
+            document.getElementById("nextLevelBtn").disabled = true;
+        }
+
+        function submitWord() {
+            const word = document.getElementById("wordInput").value.toLowerCase().trim();
+            if (!word) {
+                alert("Enter a word!");
+                return;
+            }
+
+            // Check letter availability
+            const letterCount = {};
+            for (let c of currentLetters) {
+                letterCount[c] = (letterCount[c] || 0) + 1;
+            }
+
+            let valid = true;
+            for (let c of word) {
+                if (!letterCount[c] || letterCount[c] === 0) {
+                    valid = false;
+                    break;
+                }
+                letterCount[c]--;
+            }
+
+            if (!valid) {
+                alert("Word uses invalid or unavailable letters!");
+                return;
+            }
+
+            if (!dictionary.has(word)) {
+                alert("Not a valid word!");
+                return;
+            }
+
+            if (foundWords.has(word)) {
+                alert("Word already found!");
+                return;
+            }
+
+            // Valid word
+            foundWords.add(word);
+            const li = document.createElement("li");
+            li.textContent = word.toUpperCase();
+            document.getElementById("foundWords").appendChild(li);
+            score += word.length * 10;
+            document.getElementById("score").textContent = score;
+
+            if (score >= 100) {
+                document.getElementById("nextLevelBtn").disabled = false;
+            }
+
+            document.getElementById("wordInput").value = "";
+        }
+
+        function restartGame() {
+            newGame();
+        }
+
+        function nextLevel() {
+            if (score >= 100) {
+                level++;
+                newGame();
+            } else {
+                alert("Reach 100 points to advance!");
+            }
+        }
+
+        // Initialize
+        newGame();
+    </script>
+</body>
+</html>

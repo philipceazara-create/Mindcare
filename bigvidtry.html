@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Exercise Video</title>
+
+<style>
+
+/* Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* ===== DARKER SCENIC BACKGROUND ===== */
+body {
+    font-family: Arial, sans-serif;
+    background: 
+        linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)),
+        url('https://images.unsplash.com/photo-1501785888041-af3ef285b470')
+        no-repeat center center/cover;
+    height: 100vh;
+    color: white;
+    text-align: center;
+}
+
+/* ===== NAVIGATION BAR ===== */
+.navbar {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    padding: 20px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(12px);
+}
+
+.navbar h2 {
+    font-size: 26px;
+    font-weight: bold;
+}
+
+.nav-links a {
+    color: white;
+    text-decoration: none;
+    margin-left: 30px;
+    font-size: 16px;
+    transition: 0.3s;
+}
+
+.nav-links a:hover {
+    opacity: 0.7;
+}
+
+/* ===== TITLE ===== */
+h1 {
+    margin-top: 150px;
+    font-size: 48px;
+    margin-bottom: 30px;
+}
+
+/* ===== MAIN BUTTON ===== */
+button {
+    padding: 15px 35px;
+    font-size: 18px;
+    border: none;
+    border-radius: 50px;
+    background: rgba(255, 255, 255, 0.9);
+    color: #333;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+button:hover {
+    transform: scale(1.05);
+    background: white;
+}
+
+/* ===== GLASS VIDEO BOX ===== */
+.box {
+    width: 90%;
+    max-width: 1100px;
+    margin: 60px auto;
+    padding: 50px;
+    background: rgba(255, 255, 255, 0.12);
+    border-radius: 30px;
+    backdrop-filter: blur(20px);
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6);
+    display: none;
+}
+
+/* ===== VIDEO ===== */
+video {
+    width: 100%;
+    height: 550px;
+    border-radius: 20px;
+    background: black;
+}
+
+/* ===== BACK BUTTON LEFT ===== */
+.back-btn {
+    position: fixed;
+    bottom: 30px;
+    left: 30px;
+    padding: 15px 30px;
+    border-radius: 40px;
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.back-btn:hover {
+    background: rgba(255, 255, 255, 0.35);
+}
+
+/* ===== HOME BUTTON RIGHT ===== */
+.home-btn {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    padding: 15px 30px;
+    border-radius: 40px;
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.home-btn:hover {
+    background: rgba(255, 255, 255, 0.35);
+}
+
+</style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<div class="navbar">
+    <h2>MindCare</h2>
+    <div class="nav-links">
+        <a href="#">Find a Therapist</a>
+        <a href="#">About</a>
+    </div>
+</div>
+
+<h1>Deep Breathing Exercises Video</h1>
+
+<button onclick="showVideo()">Show Video</button>
+
+<div class="box" id="videoBox">
+    <video controls>
+        <source src="your-video.mp4" type="video/mp4">
+    </video>
+</div>
+
+<!-- Home Button -->
+<button class="back-btn" onclick="location.href='MRE.html'">← Back</button>
+
+<!-- Home Button -->
+<button class="home-btn" onclick="location.href='Frontpage.html'">🏠 Back to Homepage</button>
+
+<script>
+function showVideo() {
+    document.getElementById("videoBox").style.display = "block";
+}
+</script>
+
+</body>
+</html>

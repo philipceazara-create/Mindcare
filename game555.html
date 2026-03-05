@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Catch the Ball Game</title>
+
+<style>
+/* ===================== */
+/* CALM WAVE BACKGROUND  */
+/* ===================== */
+body {
+    margin: 0;
+    min-height: 100vh;
+    font-family: Arial, sans-serif;
+    text-align: center;
+    color: #222;
+    overflow-x: hidden;
+
+    background:
+        linear-gradient(120deg, rgba(200,245,235,0.7), rgba(230,248,255,0.8)),
+        linear-gradient(60deg, rgba(240,255,250,0.9), rgba(220,245,255,0.8));
+    background-size: 400% 400%;
+    animation: waveMove 20s ease-in-out infinite;
+}
+
+@keyframes waveMove {
+    0%   { background-position: 0% 50%, 100% 50%; }
+    50%  { background-position: 100% 50%, 0% 50%; }
+    100% { background-position: 0% 50%, 100% 50%; }
+}
+
+/* ===================== */
+/* ANIMATED TITLE */
+/* ===================== */
+.game-title {
+    margin-top: 20px;
+    font-size: 38px;
+    font-weight: bold;
+    color: #007f73;
+    animation: floatText 3s ease-in-out infinite,
+               glowText 4s ease-in-out infinite;
+}
+
+/* Floating effect */
+@keyframes floatText {
+    0%   { transform: translateY(0); }
+    50%  { transform: translateY(-6px); }
+    100% { transform: translateY(0); }
+}
+
+/* Soft glow */
+@keyframes glowText {
+    0% {
+        text-shadow: 0 0 6px rgba(0, 230, 195, 0.3);
+    }
+    50% {
+        text-shadow: 0 0 14px rgba(0, 230, 195, 0.6);
+    }
+    100% {
+        text-shadow: 0 0 6px rgba(0, 230, 195, 0.3);
+    }
+}
+
+/* ===================== */
+/* GAME STYLES */
+/* ===================== */
+canvas {
+    background: linear-gradient(180deg, #ffffff, #eefaf7);
+    display: block;
+    margin: 20px auto;
+    border-radius: 16px;
+    border: 2px solid #bfeee3;
+    box-shadow: 0 18px 35px rgba(0, 150, 120, 0.18);
+}
+
+.controls {
+    margin-top: 10px;
+}
+
+button {
+    padding: 10px 18px;
+    margin: 5px;
+    font-size: 16px;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: 0.25s ease;
+}
+
+button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 18px rgba(0,0,0,0.15);
+}
+
+.restart, .mode.active, .back-btn, .play-again {
+    background: #00e6c3;
+    color: #000;
+}
+
+.close {
+    background: #ff6b6b;
+    color: #fff;
+}
+
+.mode {
+    background: #e6f7f4;
+    color: #000;
+}
+
+/* LOSE SCREEN */
+.overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(240, 250, 248, 0.95);
+    display: none;
+    justify-content: center;
+    align-items: center;
+}
+
+.lose-box {
+    background: #ffffff;
+    padding: 30px;
+    border-radius: 18px;
+    width: 280px;
+    box-shadow: 0 25px 45px rgba(0, 150, 120, 0.25);
+}
+
+.lose-box h2 {
+    color: #ff6b6b;
+}
+
+.back-container {
+    display: none;
+    margin-top: 25px;
+}
+</style>
+</head>
+
+<body>
+
+<h1 class="game-title">Catch the Ball 🎯</h1>
+<p id="statusText">Select a mode, then catch the falling ball!</p>
+
+<div class="controls">
+    <button class="mode active" onclick="setMode('easy', event)">Easy</button>
+    <button class="mode" onclick="setMode('hard', event)">Hard</button>
+    <button class="mode" onclick="setMode('extreme', event)">Extreme</button>
+</div>
+
+<div style="position: relative; width: 400px; margin: auto;">
+    <canvas id="gameCanvas" width="400" height="500"></canvas>
+
+    <div class="overlay" id="loseScreen">
+        <div class="lose-box">
+            <h2>You Lose 😢</h2>
+            <p>Mode: <span id="finalMode"></span></p>
+            <p>Score: <span id="finalScore"></span></p>
+            <button class="play-again" onclick="restartGame()">Play Again</button>
+        </div>
+    </div>
+</div>
+
+<div class="controls" id="gameControls">
+    <button class="restart" onclick="restartGame()">Restart</button>
+    <button class="close" onclick="closeGame()">Close</button>
+</div>
+
+<div class="back-container" id="backContainer">
+    <button class="back-btn" onclick="goBack()">⬅ Back to Gamepage</button>
+</div>
+
+<script>
+const canvas = document.getElementById("gameCanvas");
+const ctx = canvas.getContext("2d");
+
+let paddleWidth;
+let paddleHeight = 10;
+let paddleX;
+let paddleSpeed = 7;
+
+let ballRadius = 10;
+let ballX;
+let ballY;
+let ballSpeed;
+
+let score;
+let gameRunning = true;
+let currentMode = "easy";
+
+let rightPressed = false;
+let leftPressed = false;
+
+document.addEventListener("keydown", e => {
+    if (e.key === "ArrowRight") rightPressed = true;
+    if (e.key === "ArrowLeft") leftPressed = true;
+});
+document.addEventListener("keyup", e => {
+    if (e.key === "ArrowRight") rightPressed = false;
+    if (e.key === "ArrowLeft") leftPressed = false;
+});
+
+function setMode(mode, event) {
+    currentMode = mode;
+    document.querySelectorAll(".mode").forEach(btn => btn.classList.remove("active"));
+    if (event) event.target.classList.add("active");
+
+    if (mode === "easy") { ballSpeed = 3; paddleWidth = 100; }
+    if (mode === "hard") { ballSpeed = 5; paddleWidth = 70; }
+    if (mode === "extreme") { ballSpeed = 8; paddleWidth = 50; }
+
+    restartGame();
+}
+
+function initGame() {
+    paddleX = (canvas.width - paddleWidth) / 2;
+    ballX = Math.random() * (canvas.width - ballRadius * 2) + ballRadius;
+    ballY = 0;
+    score = 0;
+    gameRunning = true;
+    document.getElementById("loseScreen").style.display = "none";
+}
+
+function update() {
+    if (!gameRunning) return;
+
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    ctx.fillStyle = "#00e6c3";
+    ctx.fillRect(paddleX, canvas.height - paddleHeight - 10, paddleWidth, paddleHeight);
+
+    ctx.beginPath();
+    ctx.arc(ballX, ballY, ballRadius, 0, Math.PI * 2);
+    ctx.fillStyle = "#ffcc00";
+    ctx.fill();
+
+    ctx.fillStyle = "#333";
+    ctx.font = "16px Arial";
+    ctx.fillText("Score: " + score, 10, 20);
+
+    if (rightPressed && paddleX < canvas.width - paddleWidth) paddleX += paddleSpeed;
+    if (leftPressed && paddleX > 0) paddleX -= paddleSpeed;
+
+    ballY += ballSpeed;
+
+    if (
+        ballY + ballRadius >= canvas.height - paddleHeight - 10 &&
+        ballX > paddleX &&
+        ballX < paddleX + paddleWidth
+    ) {
+        score++;
+        ballY = 0;
+        ballX = Math.random() * (canvas.width - ballRadius * 2) + ballRadius;
+    }
+
+    if (ballY > canvas.height) {
+        gameRunning = false;
+        document.getElementById("finalScore").innerText = score;
+        document.getElementById("finalMode").innerText = currentMode.toUpperCase();
+        document.getElementById("loseScreen").style.display = "flex";
+    }
+
+    requestAnimationFrame(update);
+}
+
+function restartGame() {
+    initGame();
+    update();
+}
+
+function closeGame() {
+    gameRunning = false;
+    canvas.style.display = "none";
+    document.getElementById("gameControls").style.display = "none";
+    document.getElementById("backContainer").style.display = "block";
+}
+
+function goBack() {
+    window.location.href = "gamepage.html";
+}
+
+setMode("easy");
+</script>
+
+</body>
+</html>

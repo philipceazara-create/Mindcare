@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>About MindCare</title>
+
+<style>
+
+/* ===== BODY BACKGROUND ===== */
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.45)),
+                url("https://images.unsplash.com/photo-1501785888041-af3ef285b470");
+    background-size: cover;
+    background-position: center;
+    color: white;
+}
+
+/* ===== HEADER (Glass Style) ===== */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px 50px;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    color: white;
+}
+
+header h1 {
+    font-size: 28px;
+    margin: 0;
+}
+
+nav a {
+    margin-left: 30px;
+    text-decoration: none;
+    color: white;
+    font-weight: 500;
+    transition: 0.3s;
+}
+
+nav a:hover {
+    opacity: 0.8;
+}
+
+/* ===== ABOUT SECTION ===== */
+.about {
+    text-align: center;
+    padding: 100px 20px 80px 20px;
+}
+
+/* ===== MAIN ABOUT CARD ===== */
+.about-main-card {
+    background: rgba(255,255,255,0.2);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    color: white;
+    padding: 40px;
+    border-radius: 25px;
+    max-width: 800px;
+    margin: 0 auto 50px auto;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+    transition: 0.4s ease;
+}
+
+.about-main-card h2 {
+    font-size: 36px;
+    margin-bottom: 20px;
+}
+
+.about-main-card p {
+    font-size: 18px;
+    line-height: 1.6;
+}
+
+/* ===== CARDS CONTAINER ===== */
+.cards-container {
+    display: flex;
+    justify-content: center;
+    gap: 25px;
+    flex-wrap: wrap;
+    padding: 0 20px;
+}
+
+/* ===== INDIVIDUAL CARD ===== */
+.card {
+    background: rgba(255,255,255,0.2);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    color: white;
+    padding: 30px 20px;
+    border-radius: 25px;
+    max-width: 250px;
+    flex: 1 1 250px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+    text-align: center;
+    transition: 0.4s ease;
+}
+
+.card h3 {
+    font-size: 22px;
+    margin-bottom: 15px;
+}
+
+.card p {
+    font-size: 16px;
+    line-height: 1.5;
+}
+
+/* ===== HOVER EFFECTS ===== */
+.card:hover,
+.about-main-card:hover {
+    transform: translateY(-10px);
+    background: rgba(255,255,255,0.3);
+}
+
+/* ===== BUTTONS ===== */
+.buttons {
+    position: fixed;
+    bottom: 30px;
+    left: 40px;
+    right: 40px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.buttons a button {
+    padding: 12px 28px;
+    border-radius: 30px;
+    border: 1px solid rgba(255,255,255,0.4);
+    background: rgba(255,255,255,0.2);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    color: white;
+    font-size: 15px;
+    cursor: pointer;
+    transition: 0.3s ease;
+}
+
+.buttons a button:hover {
+    background: rgba(255,255,255,0.35);
+}
+
+/* ===== RESPONSIVE ===== */
+@media screen and (max-width: 900px) {
+
+    .cards-container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .card {
+        max-width: 90%;
+    }
+
+    .buttons {
+        flex-direction: column;
+        gap: 15px;
+        align-items: center;
+    }
+}
+
+</style>
+</head>
+
+<body>
+
+<header>
+    <h1>MindCare</h1>
+    <nav>
+        <a href="therapist.html">Therapist</a>
+    </nav>
+</header>
+
+<section class="about">
+
+    <!-- MAIN ABOUT CARD -->
+    <div class="about-main-card">
+        <h2>About MindCare</h2>
+        <p>
+            MindCare helps you improve your emotional well-being through interactive exercises and expert guidance. 
+            Our goal is to make mental wellness accessible to everyone, empowering you to take care of your mind and emotions.
+        </p>
+    </div>
+
+    <!-- 3 CARDS -->
+    <div class="cards-container">
+        <div class="card">
+            <h3>Mission</h3>
+            <p>Support emotional wellness through interactive exercises and resources.</p>
+        </div>
+
+        <div class="card">
+            <h3>Vision</h3>
+            <p>Make mental wellness accessible to everyone, empowering self-care daily.</p>
+        </div>
+
+        <div class="card">
+            <h3>Who We Are</h3>
+            <p>We provide a mental wellness program that helps users manage stress, improve focus, and practice daily emotional health exercises.</p>
+        </div>
+    </div>
+
+</section>
+
+<!-- BUTTONS -->
+<div class="buttons">
+    <a href="Frontpage.html"><button>Back</button></a>
+    <a href="Frontpage.html"><button>Back to Homepage</button></a>
+</div>
+
+</body>
+</html>

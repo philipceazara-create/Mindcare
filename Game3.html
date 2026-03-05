@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Connect 4 vs AI</title>
+
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-family: Arial, sans-serif;
+  overflow: hidden;
+  color: white;
+  background: radial-gradient(circle at center, #1b2735, #090a0f);
+}
+
+/* 🌌 Interactive Glow Background */
+.bg-glow {
+  position: fixed;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(0,255,255,0.25), transparent 60%);
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  transition: 0.08s linear;
+  z-index: 0;
+}
+
+canvas {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Board */
+.board {
+  display: grid;
+  grid-template-columns: repeat(6, 70px);
+  grid-template-rows: repeat(6, 70px);
+  gap: 8px;
+  background: rgba(13,71,161,0.95);
+  padding: 10px;
+  border-radius: 15px;
+  box-shadow: 0 0 25px rgba(0,0,0,0.7);
+  cursor: pointer;
+  z-index: 2;
+}
+
+.cell {
+  width: 70px;
+  height: 70px;
+  background: white;
+  border-radius: 50%;
+  position: relative;
+  overflow: hidden;
+}
+
+.disc {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  position: absolute;
+  top: -80px;
+  transition: top 0.3s ease-in;
+}
+
+.red { background: radial-gradient(circle at 30% 30%, #ff6666, red); }
+.yellow { background: radial-gradient(circle at 30% 30%, #ffff99, gold); }
+
+/* Win highlight */
+.win {
+  box-shadow: 0 0 15px 6px #00ffea inset, 0 0 20px #00ffea;
+  animation: pulse 1s infinite alternate;
+}
+@keyframes pulse {
+  from { transform: scale(1); }
+  to { transform: scale(1.08); }
+}
+
+/* Popup */
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  visibility: hidden;
+  opacity: 0;
+  transition: 0.3s;
+  z-index: 5;
+}
+.overlay.active { visibility: visible; opacity: 1; }
+
+.popup {
+  background: white;
+  color: #333;
+  padding: 30px 40px;
+  border-radius: 15px;
+  text-align: center;
+}
+
+.popup h2 { margin-bottom: 15px; }
+
+button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 6px;
+  background: #2196f3;
+  color: white;
+  cursor: pointer;
+}
+button:hover { background: #42a5f5; }
+
+.buttons {
+  margin-top: 20px;
+  display: flex;
+  gap: 15px;
+  z-index: 2;
+}
+
+h1, #status { z-index: 2; }
+
+</style>
+</head>
+<body>
+
+<div class="bg-glow" id="glow"></div>
+<canvas id="confetti"></canvas>
+
+<h1>Connect 4 vs AI</h1>
+<div id="status">Your Turn (Red)</div>
+<div class="board" id="board"></div>
+
+<div class="buttons">
+  <button onclick="resetGame()">Restart</button>
+  <button onclick="history.back()">Back</button>
+</div>
+
+<div class="overlay" id="overlay">
+  <div class="popup">
+    <h2 id="popupMessage"></h2>
+    <button onclick="closePopup()">Play Again</button>
+  </div>
+</div>
+
+<script>
+const ROWS = 6;
+const COLS = 6;
+let board = [];
+let gameActive = true;
+const human = "red";
+const ai = "yellow";
+
+const boardElement = document.getElementById("board");
+const overlay = document.getElementById("overlay");
+const popupMessage = document.getElementById("popupMessage");
+
+/* 🌌 Interactive Background Glow */
+const glow = document.getElementById("glow");
+document.addEventListener("mousemove", e => {
+  glow.style.left = e.clientX + "px";
+  glow.style.top = e.clientY + "px";
+});
+
+/* 🎉 Confetti System */
+const canvas = document.getElementById("confetti");
+const ctx = canvas.getContext("2d");
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+let confettiPieces = [];
+
+function createConfetti(){
+  confettiPieces = [];
+  for(let i=0;i<150;i++){
+    confettiPieces.push({
+      x: Math.random()*canvas.width,
+      y: Math.random()*canvas.height - canvas.height,
+      size: Math.random()*6+4,
+      speed: Math.random()*3+2,
+      color: `hsl(${Math.random()*360},100%,50%)`
+    });
+  }
+  animateConfetti();
+}
+
+function animateConfetti(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  confettiPieces.forEach(p=>{
+    ctx.fillStyle=p.color;
+    ctx.fillRect(p.x,p.y,p.size,p.size);
+    p.y+=p.speed;
+    if(p.y>canvas.height) p.y=0;
+  });
+  if(confettiPieces.length>0)
+    requestAnimationFrame(animateConfetti);
+}
+
+/* Game Logic */
+function createBoard(){
+  board=[];
+  boardElement.innerHTML="";
+  for(let r=0;r<ROWS;r++){
+    board[r]=[];
+    for(let c=0;c<COLS;c++){
+      board[r][c]=null;
+      const cell=document.createElement("div");
+      cell.classList.add("cell");
+      cell.dataset.col=c;
+      boardElement.appendChild(cell);
+    }
+  }
+}
+createBoard();
+
+boardElement.addEventListener("click",e=>{
+  if(!gameActive) return;
+  const col=e.target.dataset.col;
+  if(col===undefined) return;
+  if(dropDisc(parseInt(col),human)){
+    if(!gameActive) return;
+    setTimeout(aiMove,400);
+  }
+});
+
+function dropDisc(col,player){
+  for(let r=ROWS-1;r>=0;r--){
+    if(!board[r][col]){
+      board[r][col]=player;
+      animateDisc(r,col,player);
+      const winCells=checkWin(r,col,player);
+      if(winCells){
+        highlightWin(winCells);
+        if(player===human){
+          showPopup("🎉 YOU WIN!");
+          createConfetti();
+        }else{
+          showPopup("😢 YOU LOSE");
+        }
+        gameActive=false;
+      }
+      return true;
+    }
+  }
+  return false;
+}
+
+function animateDisc(row,col,player){
+  const cell=boardElement.children[row*COLS+col];
+  const disc=document.createElement("div");
+  disc.classList.add("disc",player);
+  cell.appendChild(disc);
+  setTimeout(()=>disc.style.top="0px",10);
+}
+
+function checkWin(r,c,player){
+  const dirs=[[0,1],[1,0],[1,1],[1,-1]];
+  for(let[dr,dc]of dirs){
+    let cells=[[r,c]];
+    for(let i=1;i<4;i++){
+      let nr=r+dr*i,nc=c+dc*i;
+      if(nr>=0&&nr<ROWS&&nc>=0&&nc<COLS&&board[nr][nc]===player)
+        cells.push([nr,nc]); else break;
+    }
+    for(let i=1;i<4;i++){
+      let nr=r-dr*i,nc=c-dc*i;
+      if(nr>=0&&nr<ROWS&&nc>=0&&nc<COLS&&board[nr][nc]===player)
+        cells.unshift([nr,nc]); else break;
+    }
+    if(cells.length>=4) return cells.slice(0,4);
+  }
+  return null;
+}
+
+function highlightWin(cells){
+  cells.forEach(([r,c])=>{
+    boardElement.children[r*COLS+c].classList.add("win");
+  });
+}
+
+function aiMove(){
+  if(!gameActive) return;
+  let valid=[];
+  for(let c=0;c<COLS;c++)
+    for(let r=ROWS-1;r>=0;r--)
+      if(!board[r][c]){ valid.push(c); break;}
+  let choice=valid[Math.floor(Math.random()*valid.length)];
+  dropDisc(choice,ai);
+}
+
+function showPopup(msg){
+  popupMessage.textContent=msg;
+  overlay.classList.add("active");
+}
+
+function closePopup(){
+  overlay.classList.remove("active");
+  confettiPieces=[];
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  resetGame();
+}
+
+function resetGame(){
+  gameActive=true;
+  confettiPieces=[];
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  createBoard();
+}
+</script>
+
+</body>
+</html>

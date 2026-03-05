@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MindCare Landing Page</title>
+  <style>
+    /* Reset and base styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body, html {
+      height: 100%;
+      font-family: 'Arial', sans-serif;
+      color: white;
+    }
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    /* Container for the entire hero / header area */
+    .hero {
+      position: relative;
+      width: 100%;
+      height: 100vh;
+      background: url('greeen.jpg') no-repeat center center;
+      background-size: cover;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Top navigation bar */
+    .navbar {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 40px;
+      background: rgba(255,255,255,0.9);
+    }
+    .navbar .logo {
+      font-size: 32px;
+      font-weight: bold;
+      color: #2F7A2F;
+    }
+    .navbar .nav-items {
+      display: flex;
+      align-items: center;
+    }
+    .navbar .nav-items > * {
+      margin-left: 30px;
+      font-size: 18px;
+      color: #2F7A2F;
+      cursor: pointer;
+    }
+
+    /* Hero text + content area */
+    .hero-content {
+      flex: 1;
+      display: flex;
+       font-family: 'Arial', sans-serif;
+      color: rgb(8, 91, 0);
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 60px 60px 60px;
+    }
+
+    /* Card container (Tetris) */
+    .Tetris {
+      display: flex;              /* make them line up horizontally */
+      justify-content: center;    /* center them in the page */
+      align-items: center;        /* align vertically */
+      gap: 40px;                  /* space between cards */
+      margin-top: 80px;
+      z-index: 1;
+      font-family: 'Arial', sans-serif;
+      color: rgb(255, 255, 255);
+    }
+
+    /* Individual cards */
+    .icon-card {
+      width: 200px;
+      height: 200px;
+      background-color: rgba(22, 90, 12, 0.9);
+      border-radius: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.3s ease, background-color 0.3s ease;
+    }
+
+    .icon-card:hover {
+      transform: translateY(-10px);
+      background-color: rgb(192, 231, 158);
+    }
+
+    .icon-inner img {
+      max-width: 80px;
+      max-height: 80px;
+    }
+
+    /* Optional overlay */
+    .overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      
+      z-index: 0;
+    }
+
+    .navbar, .Tetris {
+      position: relative;
+      z-index: 1;
+    }
+  
+  </style>
+</head>
+<body>
+ <h1>Games</h1>
+    <div class="hero">
+    <div class="overlay"></div>
+    <div class="navbar">
+      <div class="logo">MindCare</div>
+      <div class="nav-items">
+       <a href="therapist.html" class="nav-link">FIND A THERAPIST</a>
+        <div>About</div>
+      </div>
+    </div>
+<div class="hero-content">
+      <div class="hero-text">
+        <center><h1>Expressing Writing</h1>
+       
+        <div class="Tetris">
+      <div class="icon-card">
+        <div class="icon-inner" onclick="window.location.href=''">
+          <h1>ex1</h1>
+        </div>
+      </div>
+      <div class="icon-card">
+         <div class="icon-inner" onclick="window.location.href=''">
+         <h1>ex2</h1>
+        </div>
+      </div>
+      <div class="icon-card">
+         <div class="icon-inner" onclick="window.location.href=''">
+         <h1>ex3</h1>
+        </div>
+      </div>
+         <div class="icon-card">
+         <div class="icon-inner" onclick="window.location.href=''">
+         <h1>ex4</h1>
+        </div>
+      </div>
+         <div class="icon-card">
+         <div class="icon-inner" onclick="window.location.href=''">
+         <h1>ex5</h1>
+        </div>
+      </div>
+          <div class="icon-card">
+         <div class="icon-inner" onclick="window.location.href=''">
+         <h1>ex6</h1>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>MindCare – Mental Health Tips</title>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Roboto', Arial, Helvetica, sans-serif; /* Changed to Roboto for a more modern, readable font; ensure to link Google Fonts if needed */
+    }
+
+    /* Container for the entire hero / header area */
+    .hero {
+      position: relative;
+      width: 100%;
+      height: 100vh; /* full viewport height */
+      background: url('download.jpg') no-repeat center center;
+      background-size: cover;
+      display: flex;
+      flex-direction: column;
+    }
+
+    body {
+        background: url("Background.jpg") no-repeat center center/cover;
+        min-height: 100vh;
+        color: white;
+    }
+
+    /* Top Navigation */
+    .navbar {
+        background: rgba(200, 230, 200, 0.85);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 15px 40px;
+    }
+
+    .logo {
+        font-size: 28px;
+        font-weight: bold;
+        color: #2e7d32;
+    }
+
+    .nav-links a {
+        margin-left: 25px;
+        text-decoration: none;
+        color: white;
+        font-weight: bold;
+    }
+
+    /* Main Content */
+    .container {
+        padding: 60px 80px;
+    }
+
+    h1 {
+        text-align: center;
+        margin-bottom: 50px;
+        font-size: 48px; /* Increased from 36px for better visibility */
+        font-weight: bold; /* Added bold for emphasis */
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.5); /* Added shadow for contrast on image background */
+    }
+
+    .cards {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 40px;
+    }
+
+    .card {
+        background: rgba(70, 130, 80, 0.75);
+        padding: 30px;
+        border-radius: 20px;
+        position: relative;
+    }
+
+    .card span {
+        position: absolute;
+        top: -20px;
+        left: -20px;
+        background: white;
+        color: #2e7d32;
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 22px;
+        font-weight: bold;
+    }
+
+    .card h3 {
+        margin-bottom: 15px;
+        font-size: 28px; /* Increased from 22px for more prominent headings */
+        font-weight: bold; /* Ensured bold */
+        color: #ffffff; /* Explicit white for high contrast */
+    }
+
+    .card p {
+        line-height: 1.8; /* Slightly increased from 1.6 for better readability */
+        font-size: 18px; /* Increased from 15px to make paragraphs more visible */
+        font-weight: 400; /* Normal weight for body text */
+        color: #f0f0f0; /* Slightly off-white for subtle contrast without losing readability */
+    }
+
+    /* Buttons */
+    .buttons {
+        margin-top: 50px;
+        display: flex;
+        gap: 20px;
+    }
+
+    .buttons button {
+        padding: 12px 25px;
+        border-radius: 20px;
+        border: none;
+        background: rgba(70, 130, 80, 0.9);
+        color: white;
+        cursor: pointer;
+        font-size: 16px; /* Slightly increased for button text visibility */
+    }
+
+    .buttons button:hover {
+        background: rgba(50, 110, 60, 1);
+    }
+
+    @media (max-width: 768px) {
+        .cards {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+</head>
+
+<body>
+
+<!-- Navigation -->
+<div class="hero">
+    <div class="overlay"></div>
+    <div class="navbar">
+      <div class="logo">MindCare</div>
+      <div class="nav-items">
+        <a href="therapist.html" class="nav-link">FIND A THERAPIST</a>
+        <a>About</a>
+      </div>
+    </div>
+
+<!-- Main Content -->
+<div class="container">
+    <h1>Tips to prevent mental health issues</h1>
+
+    <div class="cards">
+        <div class="card">
+            <span>1</span>
+            <h3>Practice Self-care daily</h3>
+            <p>
+                Take time for rest, proper sleep, healthy eating, and regular exercise.
+                A balanced lifestyle keeps both your body and mind strong.
+            </p>
+        </div>
+
+        <div class="card">
+            <span>3</span>
+            <h3>Talk about your feelings</h3>
+            <p>
+                Sharing your thoughts with friends, family, or a counselor helps
+                release stress and prevents emotions from building up inside.
+            </p>
+        </div>
+
+        <div class="card">
+            <span>2</span>
+            <h3>Manage Stress in Healthy Ways</h3>
+            <p>
+                Use relaxation techniques like deep breathing, meditation,
+                journaling, or hobbies to handle stress before it becomes overwhelming.
+            </p>
+        </div>
+
+        <div class="card">
+            <span>4</span>
+            <h3>Stay Connected and Seek Support</h3>
+            <p>
+                Build supportive relationships and don't hesitate to ask for help
+                when you need it. Strong connections protect your mental well-being.
+            </p>
+        </div>
+    </div>
+
+    <div class="buttons">
+        <button>Proceed to next page</button>
+        <button>Back to the first page</button>
+    </div>
+</div>
+
+</body>
+</html>

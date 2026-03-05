@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MindCare – Interactive Games</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap');
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
+
+body{
+    min-height:100vh;
+    background: linear-gradient(135deg,#c8facc,#8fd694,#2e7d32);
+    display:flex;
+    flex-direction:column;
+    overflow-x:hidden;
+}
+
+/* ================= NAVBAR ================= */
+.navbar{
+    width:100%;
+    padding:20px 50px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    background:rgba(255,255,255,0.15);
+    backdrop-filter:blur(15px);
+    border-bottom:1px solid rgba(255,255,255,0.2);
+}
+
+.logo{
+    font-size:28px;
+    font-weight:700;
+    color:#0d3b0d;
+}
+
+.nav-items a{
+    margin-left:30px;
+    text-decoration:none;
+    font-weight:500;
+    color:#0d3b0d;
+    position:relative;
+}
+
+.nav-items a::after{
+    content:"";
+    position:absolute;
+    width:0%;
+    height:2px;
+    background:#0d3b0d;
+    left:0;
+    bottom:-4px;
+    transition:0.3s;
+}
+
+.nav-items a:hover::after{
+    width:100%;
+}
+
+/* ================= HEADER ================= */
+.header{
+    text-align:center;
+    margin:50px 20px 30px;
+    color:#103e13;
+}
+
+.header h1{
+    font-size:3rem;
+    margin-bottom:10px;
+    animation:float 4s ease-in-out infinite;
+}
+
+.header p{
+    font-size:1.2rem;
+    opacity:0.8;
+}
+
+@keyframes float{
+    0%,100%{transform:translateY(0);}
+    50%{transform:translateY(-12px);}
+}
+
+/* ================= GAME GRID ================= */
+.game-container{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+    gap:30px;
+    padding:40px 60px;
+}
+
+/* ================= GAME CARD ================= */
+.game-btn{
+    position:relative;
+    height:180px;
+    border-radius:25px;
+    background:rgba(255,255,255,0.2);
+    backdrop-filter:blur(15px);
+    border:1px solid rgba(255,255,255,0.3);
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    cursor:pointer;
+    transition:all 0.4s ease;
+    overflow:hidden;
+}
+
+.game-btn img{
+    width:55px;
+    margin-bottom:15px;
+}
+
+.game-btn span{
+    font-weight:600;
+    color:#0d3b0d;
+}
+
+/* Hover Glow */
+.game-btn:hover{
+    transform:translateY(-10px) scale(1.05);
+    box-shadow:0 15px 40px rgba(0,0,0,0.4);
+}
+
+/* Soft moving shine */
+.game-btn::before{
+    content:"";
+    position:absolute;
+    width:200%;
+    height:200%;
+    background:linear-gradient(
+        60deg,
+        transparent,
+        rgba(255,255,255,0.4),
+        transparent
+    );
+    transform:rotate(45deg);
+    top:-100%;
+    left:-100%;
+    animation:shine 6s linear infinite;
+}
+
+@keyframes shine{
+    0%{top:-100%; left:-100%;}
+    100%{top:100%; left:100%;}
+}
+
+/* ================= RIPPLE EFFECT ================= */
+.game-btn .ripple{
+    position:absolute;
+    border-radius:50%;
+    background:rgba(255,255,255,0.6);
+    transform:scale(0);
+    animation:ripple 0.6s linear;
+}
+
+@keyframes ripple{
+    to{
+        transform:scale(4);
+        opacity:0;
+    }
+}
+
+/* ================= FOOTER BUTTONS ================= */
+.buttons{
+    display:flex;
+    justify-content:space-between;
+    padding:40px 60px;
+    margin-top:auto;
+}
+
+.back-button{
+    padding:12px 28px;
+    border:none;
+    border-radius:30px;
+    background:#0d3b0d;
+    color:white;
+    font-weight:500;
+    cursor:pointer;
+    transition:0.3s;
+}
+
+.back-button:hover{
+    background:#072907;
+    transform:translateY(-3px);
+    box-shadow:0 10px 20px rgba(0,0,0,0.3);
+}
+
+/* ================= RESPONSIVE ================= */
+@media(max-width:768px){
+    .buttons{
+        flex-direction:column;
+        gap:15px;
+    }
+}
+
+</style>
+</head>
+<body>
+
+<div class="navbar">
+    <div class="logo">MindCare</div>
+    <div class="nav-items">
+        <a href="therapist.html">Therapist</a>
+        <a href="About.html">About</a>
+    </div>
+</div>
+
+<div class="header">
+    <h1>Interactive Games</h1>
+    <p>Click a game you want to play</p>
+</div>
+
+<div class="game-container">
+
+    <div class="game-btn" onclick="navigate(event,'Tetris.html')">
+        <img src="tetris.png">
+        <span>Neon Tetris</span>
+    </div>
+
+    <div class="game-btn" onclick="navigate(event,'Sokoban.html')">
+        <img src="sokoban.png">
+        <span>Sokoban</span>
+    </div>
+
+    <div class="game-btn" onclick="navigate(event,'Frogger.html')">
+        <img src="Dots.png">
+        <span>Connect The Dots</span>
+    </div>
+
+    <div class="game-btn" onclick="navigate(event,'Snake game.html')">
+        <img src="Snake.png">
+        <span>Snake Game</span>
+    </div>
+
+    <div class="game-btn" onclick="navigate(event,'Catch The Ball.html')">
+        <img src="Ball.png">
+        <span>Catch The Ball</span>
+    </div>
+
+    <div class="game-btn" onclick="navigate(event,'Puzzle.html')">
+        <img src="Puzzle.png">
+        <span>Pixel Puzzle</span>
+    </div>
+
+</div>
+
+<div class="buttons">
+    <button class="back-button" onclick="window.location.href='Frontpage.html'">Back</button>
+    <button class="back-button" onclick="window.location.href='Frontpage.html'">Back to Homepage</button>
+</div>
+
+<script>
+function navigate(e, url){
+    const circle = document.createElement("span");
+    circle.classList.add("ripple");
+
+    const rect = e.currentTarget.getBoundingClientRect();
+    circle.style.left = e.clientX - rect.left + "px";
+    circle.style.top = e.clientY - rect.top + "px";
+
+    e.currentTarget.appendChild(circle);
+
+    setTimeout(()=>{
+        window.location.href = url;
+    }, 300);
+}
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>MindCare – Emotional Exercises</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:"Segoe UI",Roboto,Arial,sans-serif;
+}
+
+body{
+  min-height:100vh;
+  color:white;
+  background:
+    linear-gradient(rgba(0,30,25,0.65), rgba(0,30,25,0.65)),
+    url("https://images.unsplash.com/photo-1501785888041-af3ef285b470") no-repeat center/cover;
+  overflow-x:hidden;
+}
+
+/* NAVBAR */
+.navbar{
+  padding:20px 60px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  background:rgba(255,255,255,0.08);
+  backdrop-filter:blur(15px);
+  border-bottom:1px solid rgba(255,255,255,0.15);
+}
+
+.logo{
+  font-size:28px;
+  font-weight:600;
+}
+
+.nav-links a{
+  margin-left:35px;
+  color:white;
+  text-decoration:none;
+  position:relative;
+}
+
+.nav-links a::after{
+  content:"";
+  position:absolute;
+  left:0;
+  bottom:-6px;
+  width:0%;
+  height:2px;
+  background:white;
+  transition:0.3s;
+}
+
+.nav-links a:hover::after{
+  width:100%;
+}
+
+/* HERO */
+.hero{
+  padding:80px 20px 40px;
+  text-align:center;
+}
+
+.hero h1{
+  font-size:48px;
+  margin-bottom:10px;
+}
+
+.hero h2{
+  font-size:26px;
+  opacity:0.9;
+  margin-bottom:30px;
+}
+
+.thumb-row{
+  display:flex;
+  gap:40px;
+  justify-content:center;
+  flex-wrap:wrap;
+}
+
+.thumb{
+  width:220px;
+  height:140px;
+  border-radius:20px;
+  overflow:hidden;
+  cursor:pointer;
+  border:1px solid rgba(255,255,255,0.2);
+  transition:0.4s;
+}
+
+.thumb img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+.thumb:hover{
+  transform:translateY(-8px) scale(1.03);
+  box-shadow:0 20px 50px rgba(0,0,0,0.4);
+}
+
+/* TOOLBAR */
+.tool-bar{
+  max-width:900px;
+  margin:40px auto 15px;
+  padding:15px;
+  display:none;
+  gap:10px;
+  flex-wrap:wrap;
+  background:rgba(255,255,255,0.08);
+  backdrop-filter:blur(15px);
+  border-radius:20px;
+  border:1px solid rgba(255,255,255,0.15);
+}
+
+.tool-bar input,
+.tool-bar select,
+.tool-bar button{
+  padding:8px 12px;
+  border-radius:10px;
+  border:none;
+  cursor:pointer;
+}
+
+/* PAPER */
+.paper-container{
+  max-width:900px;
+  margin:20px auto 80px;
+  padding:20px;
+  border-radius:25px;
+  display:none;
+  background:rgba(255,255,255,0.08);
+  backdrop-filter:blur(18px);
+  border:1px solid rgba(255,255,255,0.15);
+  position:relative;
+}
+
+canvas{
+  width:100%;
+  height:480px;
+  border-radius:15px;
+  display:block;
+}
+
+#drawingCanvas{
+  position:absolute;
+  top:20px;
+  left:20px;
+}
+
+/* BUTTONS */
+.buttons{
+  position:fixed;
+  bottom:25px;
+  left:0;
+  right:0;
+  display:flex;
+  justify-content:space-between;
+  padding:0 60px;
+}
+
+.back-button{
+  padding:12px 28px;
+  border-radius:30px;
+  border:1px solid rgba(255,255,255,0.25);
+  background:rgba(255,255,255,0.1);
+  color:white;
+  cursor:pointer;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="navbar">
+  <div class="logo">MindCare</div>
+  <div class="nav-links">
+    <a href="Therapist.html">Therapist</a>
+    <a href="About.html">About</a>
+  </div>
+</div>
+
+<div class="hero">
+  <h1>Emotional Exercises</h1>
+  <h2>Art Therapy Activities</h2>
+
+  <div class="thumb-row">
+    <div class="thumb"><img src="a1.jpg"></div>
+    <div class="thumb"><img src="a2.jpg"></div>
+    <div class="thumb"><img src="a3.jpg"></div>
+  </div>
+
+  <p style="margin-top:20px;">Click an image to start drawing.</p>
+</div>
+
+<div class="tool-bar">
+  <input type="color" id="colorPicker" value="#000000">
+  <input type="range" id="sizeRange" min="1" max="40" value="3">
+  <button id="eraserBtn">Eraser</button>
+  <button id="undoBtn">Undo</button>
+  <button id="clearBtn">Clear</button>
+  <button id="saveBtn">Save</button>
+  <button id="closeCanvasBtn">Close</button>
+</div>
+
+<div class="paper-container">
+  <canvas id="bgCanvas" width="860" height="480"></canvas>
+  <canvas id="drawingCanvas" width="860" height="480"></canvas>
+</div>
+
+<div class="buttons">
+  <a href="Exercise.html"><button class="back-button">← Back</button></a>
+ <a href="Frontpage.html"> <button class="back-button">🏠 Home</button></a>
+</div>
+
+<script>
+// ================= SETUP =================
+const drawingCanvas = document.getElementById("drawingCanvas");
+const bgCanvas = document.getElementById("bgCanvas");
+const ctx = drawingCanvas.getContext("2d");
+const bgCtx = bgCanvas.getContext("2d");
+
+const toolBar = document.querySelector(".tool-bar");
+const paperContainer = document.querySelector(".paper-container");
+const thumbs = document.querySelectorAll(".thumb");
+
+const colorPicker = document.getElementById("colorPicker");
+const sizeRange = document.getElementById("sizeRange");
+const eraserBtn = document.getElementById("eraserBtn");
+const undoBtn = document.getElementById("undoBtn");
+const clearBtn = document.getElementById("clearBtn");
+const saveBtn = document.getElementById("saveBtn");
+const closeCanvasBtn = document.getElementById("closeCanvasBtn");
+
+let drawing = false;
+let isEraser = false;
+let undoStack = [];
+
+// ================= OPEN CANVAS =================
+thumbs.forEach(thumb => {
+  thumb.addEventListener("click", () => {
+    toolBar.style.display = "flex";
+    paperContainer.style.display = "block";
+  });
+});
+
+// ================= DRAWING =================
+function start(e){
+  drawing = true;
+  ctx.beginPath();
+  draw(e);
+}
+
+function end(){
+  drawing = false;
+  ctx.beginPath();
+  undoStack.push(drawingCanvas.toDataURL());
+}
+
+function draw(e){
+  if(!drawing) return;
+  const rect = drawingCanvas.getBoundingClientRect();
+  const x = (e.clientX || e.touches[0].clientX) - rect.left;
+  const y = (e.clientY || e.touches[0].clientY) - rect.top;
+
+  ctx.lineWidth = sizeRange.value;
+  ctx.lineCap = "round";
+  ctx.strokeStyle = isEraser ? "black" : colorPicker.value;
+  ctx.globalCompositeOperation = isEraser ? "destination-out" : "source-over";
+
+  ctx.lineTo(x,y);
+  ctx.stroke();
+  ctx.beginPath();
+  ctx.moveTo(x,y);
+}
+
+drawingCanvas.addEventListener("mousedown", start);
+drawingCanvas.addEventListener("mouseup", end);
+drawingCanvas.addEventListener("mousemove", draw);
+drawingCanvas.addEventListener("touchstart", start);
+drawingCanvas.addEventListener("touchend", end);
+drawingCanvas.addEventListener("touchmove", draw);
+
+// ================= TOOLS =================
+eraserBtn.onclick = () => isEraser = !isEraser;
+
+undoBtn.onclick = () => {
+  if(undoStack.length > 0){
+    const img = new Image();
+    img.src = undoStack.pop();
+    img.onload = () => {
+      ctx.clearRect(0,0,drawingCanvas.width,drawingCanvas.height);
+      ctx.drawImage(img,0,0);
+    };
+  }
+};
+
+clearBtn.onclick = () => {
+  ctx.clearRect(0,0,drawingCanvas.width,drawingCanvas.height);
+};
+
+saveBtn.onclick = () => {
+  const link = document.createElement("a");
+  link.download = "mindcare-art.png";
+  link.href = drawingCanvas.toDataURL();
+  link.click();
+};
+
+closeCanvasBtn.onclick = () => {
+  toolBar.style.display = "none";
+  paperContainer.style.display = "none";
+};
+
+</script>
+
+</body>
+</html>

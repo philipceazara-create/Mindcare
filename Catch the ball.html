@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>MindCare – Catch the Ball</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Segoe UI", Arial, sans-serif;
+}
+
+/* ===== BACKGROUND ===== */
+body {
+    min-height: 100vh;
+    background:
+        linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.45)),
+        url("https://images.unsplash.com/photo-1501785888041-af3ef285b470")
+        no-repeat center center/cover;
+    color: white;
+}
+
+/* ===== GLASS NAVBAR ===== */
+.navbar {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    padding: 20px 60px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    backdrop-filter: blur(12px);
+    background: rgba(255,255,255,0.15);
+}
+
+.logo {
+    font-size: 30px;
+    font-weight: bold;
+}
+
+.nav-links {
+    display: flex;
+    gap: 40px;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: white;
+    font-weight: 600;
+    font-size: 18px;
+    transition: 0.3s;
+}
+
+.nav-links a:hover {
+    opacity: 0.8;
+}
+
+/* ===== MAIN CONTENT ===== */
+.main {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 150px 100px 80px 100px;
+}
+
+/* ===== GLASS GAME CARD ===== */
+.game-card {
+    width: 300px;
+    text-align: center;
+    padding: 25px;
+    border-radius: 20px;
+    background: rgba(255,255,255,0.15);
+    backdrop-filter: blur(15px);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+    transition: 0.3s;
+}
+
+.game-card:hover {
+    transform: translateY(-8px);
+}
+
+.game-card img {
+    width: 100%;
+    border-radius: 15px;
+}
+
+.game-title {
+    margin-top: 20px;
+    font-size: 22px;
+    font-weight: bold;
+}
+
+/* ===== TEXT SECTION ===== */
+.text-section {
+    max-width: 700px;
+    text-align: center;
+}
+
+.text-section h1 {
+    font-size: 52px;
+    margin-bottom: 30px;
+}
+
+.text-section p {
+    font-size: 22px;
+    line-height: 1.6;
+    margin-bottom: 40px;
+}
+
+/* ===== TRY NOW BUTTON ===== */
+.try-btn {
+    background: white;
+    padding: 18px 60px;
+    font-size: 24px;
+    border-radius: 40px;
+    text-decoration: none;
+    color: #333;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+.try-btn:hover {
+    background: #f0f0f0;
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+}
+
+/* ===== FLOATING BACK BUTTONS ===== */
+.back-left,
+.back-right {
+    position: fixed;
+    bottom: 30px;
+}
+
+.back-left { left: 30px; }
+.back-right { right: 30px; }
+
+.back-btn {
+    background: rgba(255,255,255,0.2);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,255,255,0.3);
+    padding: 14px 30px;
+    border-radius: 30px;
+    color: white;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.back-btn:hover {
+    background: rgba(255,255,255,0.35);
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 900px) {
+    .main {
+        flex-direction: column;
+        gap: 40px;
+        text-align: center;
+    }
+
+    .text-section h1 {
+        font-size: 40px;
+    }
+
+    .text-section p {
+        font-size: 18px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<div class="navbar">
+    <div class="logo">MindCare</div>
+    <div class="nav-links">
+        <a href="therapist.html">Therapist</a>
+        <a href="About.html">About</a>
+    </div>
+</div>
+
+<!-- MAIN CONTENT -->
+<div class="main">
+
+    <!-- LEFT GAME CARD -->
+    <div class="game-card">
+        <img src="Ball.png" alt="Catch the Ball Game">
+        <div class="game-title">Catch the Ball</div>
+    </div>
+
+    <!-- RIGHT TEXT -->
+    <div class="text-section">
+        <h1>Mechanics of the Game</h1>
+        <p>
+           Catch the Ball is a simple arcade game where the player moves
+           a paddle to catch a falling ball. The game tests the player’s reaction
+           time and coordination as the ball moves faster over time.
+        </p>
+
+        <a href="game555.html" class="try-btn">Try Now</a>
+    </div>
+
+</div>
+
+<!-- FLOATING BACK BUTTONS -->
+<div class="back-left">
+    <a href="Gamepage.html" class="back-btn">← Back</a>
+</div>
+
+<div class="back-right">
+    <a href="Frontpage.html" class="back-btn">🏠 Back to Homepage</a>
+</div>
+
+</body>
+</html>

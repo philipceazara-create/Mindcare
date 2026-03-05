@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MindCare - Expressive Writing</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:"Segoe UI", Arial, sans-serif;
+}
+
+body{
+    min-height:100vh;
+    color:white;
+    background:
+        linear-gradient(rgba(0,30,25,0.65), rgba(0,30,25,0.65)),
+        url("https://images.unsplash.com/photo-1501785888041-af3ef285b470") no-repeat center/cover;
+    overflow-x:hidden;
+}
+
+/* ================= NAVBAR ================= */
+
+header{
+    padding:20px 60px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    background:rgba(255,255,255,0.08);
+    backdrop-filter:blur(15px);
+    border-bottom:1px solid rgba(255,255,255,0.15);
+}
+
+header h1{
+    font-size:28px;
+    font-weight:600;
+}
+
+nav a{
+    margin-left:35px;
+    color:white;
+    text-decoration:none;
+    position:relative;
+    transition:0.3s;
+}
+
+nav a::after{
+    content:"";
+    position:absolute;
+    left:0;
+    bottom:-6px;
+    width:0%;
+    height:2px;
+    background:white;
+    transition:0.3s;
+}
+
+nav a:hover::after{
+    width:100%;
+}
+
+/* ================= TITLE ================= */
+
+.title{
+    text-align:center;
+    margin:80px 0 40px;
+}
+
+.title h2{
+    font-size:46px;
+    font-weight:700;
+    margin-bottom:10px;
+}
+
+.title p{
+    font-size:22px;
+    opacity:0.85;
+}
+
+/* ================= PAPER GRID ================= */
+
+.container{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+    gap:30px;
+    padding:0 60px 120px;
+}
+
+/* ================= GLASS PAPER ================= */
+
+.paper{
+    background:rgba(255,255,255,0.08);
+    backdrop-filter:blur(18px);
+    border-radius:25px;
+    padding:25px;
+    border:1px solid rgba(255,255,255,0.15);
+    transition:0.3s;
+}
+
+.paper:hover{
+    transform:translateY(-6px);
+    box-shadow:0 20px 50px rgba(0,0,0,0.35);
+}
+
+/* Writing lines */
+
+.line{
+    display:flex;
+    align-items:center;
+    margin-bottom:18px;
+}
+
+.line input[type="checkbox"]{
+    margin-right:12px;
+    width:18px;
+    height:18px;
+    accent-color:#7cffb2;
+}
+
+.line textarea{
+    width:100%;
+    border:none;
+    border-bottom:1px solid rgba(255,255,255,0.4);
+    background:transparent;
+    resize:none;
+    outline:none;
+    font-size:15px;
+    padding:6px;
+    color:white;
+}
+
+.line textarea::placeholder{
+    color:rgba(255,255,255,0.6);
+}
+
+/* ================= BOTTOM BUTTONS ================= */
+
+.buttons{
+    position:fixed;
+    bottom:25px;
+    left:0;
+    right:0;
+    display:flex;
+    justify-content:space-between;
+    padding:0 60px;
+}
+
+.back-button{
+    padding:12px 28px;
+    border-radius:30px;
+    border:1px solid rgba(255,255,255,0.25);
+    background:rgba(255,255,255,0.1);
+    backdrop-filter:blur(10px);
+    color:white;
+    font-size:15px;
+    cursor:pointer;
+    transition:0.3s ease;
+}
+
+.back-button:hover{
+    background:rgba(255,255,255,0.2);
+    transform:translateY(-3px);
+    box-shadow:0 10px 25px rgba(0,0,0,0.3);
+}
+
+/* ================= RESPONSIVE ================= */
+
+@media(max-width:768px){
+    .title h2{font-size:34px}
+    .buttons{padding:0 20px}
+}
+
+</style>
+</head>
+
+<body>
+
+<header>
+    <h1>MindCare</h1>
+    <nav>
+        <a href="therapist.html">Therapist</a>
+        <a href="About.html">About</a>
+    </nav>
+</header>
+
+<div class="title">
+    <h2>Emotional Exercises</h2>
+    <p>Expressive Writing</p>
+</div>
+
+<div class="container">
+
+    <div class="paper">
+        <div class="line"><input type="checkbox"><textarea rows="1" placeholder="Write here..."></textarea></div>
+        <div class="line"><input type="checkbox"><textarea rows="1" placeholder="Write here..."></textarea></div>
+        <div class="line"><input type="checkbox"><textarea rows="1" placeholder="Write here..."></textarea></div>
+    </div>
+
+    <div class="paper">
+        <div class="line"><input type="checkbox"><textarea rows="1"></textarea></div>
+        <div class="line"><input type="checkbox"><textarea rows="1"></textarea></div>
+        <div class="line"><input type="checkbox"><textarea rows="1"></textarea></div>
+    </div>
+
+    <div class="paper">
+        <div class="line"><input type="checkbox"><textarea rows="1"></textarea></div>
+        <div class="line"><input type="checkbox"><textarea rows="1"></textarea></div>
+        <div class="line"><input type="checkbox"><textarea rows="1"></textarea></div>
+    </div>
+
+    <div class="paper">
+        <div class="line"><input type="checkbox"><textarea rows="1"></textarea></div>
+        <div class="line"><input type="checkbox"><textarea rows="1"></textarea></div>
+        <div class="line"><input type="checkbox"><textarea rows="1"></textarea></div>
+    </div>
+
+    <div class="paper">
+        <div class="line"><input type="checkbox"><textarea rows="1"></textarea></div>
+        <div class="line"><input type="checkbox"><textarea rows="1"></textarea></div>
+        <div class="line"><input type="checkbox"><textarea rows="1"></textarea></div>
+    </div>
+
+</div>
+
+<div class="buttons">
+    <a href="Exercise.html"><button class="back-button">← Back</button></a>
+    <a href="Frontpage.html"><button class="back-button">🏠 Back to Homepage</button></a>
+</div>
+
+</body>
+</html>

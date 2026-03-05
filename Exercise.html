@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MindCare - Exercises</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
+
+body,html{
+    height:100%;
+}
+
+/* ===== HERO SECTION ===== */
+.hero{
+    position:relative;
+    height:100vh;
+    background:url('forestpon.jpg') no-repeat center center/cover;
+    display:flex;
+    flex-direction:column;
+}
+
+/* Dark overlay */
+.overlay{
+    position:absolute;
+    inset:0;
+    background:rgba(0,0,0,0.35);
+    backdrop-filter:blur(2px);
+}
+
+/* ===== NAVBAR ===== */
+.navbar{
+    position:relative;
+    z-index:2;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:25px 60px;
+    background:rgba(255,255,255,0.15);
+    backdrop-filter:blur(10px);
+}
+
+.logo{
+    font-size:28px;
+    font-weight:700;
+    color:white;
+}
+
+.nav-items{
+    display:flex;
+    gap:40px;
+    color:white;
+    font-weight:500;
+}
+
+.nav-items a{
+    text-decoration:none;
+    color:white;
+    transition:0.3s;
+}
+
+.nav-items a:hover{
+    opacity:0.7;
+}
+
+/* ===== CENTER CARD ===== */
+.hero-content{
+    flex:1;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    position:relative;
+    z-index:2;
+}
+
+.options-container{
+    width:520px;
+    padding:50px 40px;
+    border-radius:25px;
+    background:rgba(255,255,255,0.15);
+    backdrop-filter:blur(20px);
+    box-shadow:0 15px 40px rgba(0,0,0,0.3);
+    text-align:center;
+    color:white;
+}
+
+.options-container h1{
+    font-size:40px;
+    margin-bottom:10px;
+}
+
+.options-container label{
+    display:block;
+    margin-bottom:30px;
+    font-size:16px;
+    opacity:0.9;
+}
+
+/* ===== BUTTONS ===== */
+.option-buttons{
+    display:flex;
+    flex-direction:column;
+    gap:20px;
+}
+
+.option-btn{
+    padding:18px;
+    font-size:16px;
+    border-radius:40px;
+    border:none;
+    cursor:pointer;
+    transition:0.3s;
+    background:rgba(255,255,255,0.2);
+    color:white;
+    backdrop-filter:blur(5px);
+}
+
+/* First button white glowing like screenshot */
+.option-btn:first-child{
+    background:white;
+    color:#2F7A2F;
+    box-shadow:0 0 20px rgba(255,255,255,0.8);
+    font-weight:600;
+}
+
+.option-btn:hover{
+    transform:translateY(-4px);
+    box-shadow:0 8px 20px rgba(0,0,0,0.3);
+}
+
+.option-btn a{
+    text-decoration:none;
+    color:inherit;
+    display:block;
+    width:100%;
+}
+
+/* ===== BOTTOM BUTTONS ===== */
+.bottom-buttons{
+    position:absolute;
+    bottom:30px;
+    left:40px;
+    right:40px;
+    display:flex;
+    justify-content:space-between;
+    z-index:2;
+}
+
+.back-button{
+    padding:14px 28px;
+    border-radius:30px;
+    border:none;
+    background:rgba(255,255,255,0.2);
+    color:white;
+    backdrop-filter:blur(10px);
+    cursor:pointer;
+    transition:0.3s;
+}
+
+.back-button:hover{
+    background:rgba(255,255,255,0.35);
+}
+</style>
+</head>
+
+<body>
+
+<div class="hero">
+    <div class="overlay"></div>
+
+    <!-- NAVBAR -->
+    <div class="navbar">
+        <div class="logo">MindCare</div>
+        <div class="nav-items">
+            <a href="therapist.html">Therapist</a>
+            <a href="About.html">About</a>
+        </div>
+    </div>
+
+    <!-- CENTER CONTENT -->
+    <div class="hero-content">
+        <div class="options-container">
+            <h1>Exercises</h1>
+            <label>Choose an option below:</label>
+
+            <div class="option-buttons">
+                <button class="option-btn">
+                    <a href="MRE.html">Mindfulness & Relaxation Exercises</a>
+                </button>
+
+                <button class="option-btn">
+                    <a href="Physical Exercises.html">Physical Exercises</a>
+                </button>
+
+                <button class="option-btn">
+                    <a href="Emotional Exercises.html">Emotional Exercises</a>
+                </button>
+
+                <button class="option-btn">
+                    <a href="Expressive w.html">Expressive Writing</a>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- BOTTOM BUTTONS -->
+    <div class="bottom-buttons">
+        <a href="Frontpage.html">
+            <button class="back-button">← Back</button>
+        </a>
+
+        <a href="Frontpage.html">
+            <button class="back-button">🏠 Back to Homepage</button>
+        </a>
+    </div>
+
+</div>
+
+</body>
+</html>

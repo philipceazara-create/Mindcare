@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Sokoban Game</title>
+
+<style>
+html, body {
+  height: 100%;
+  margin: 0;
+  font-family: "Segoe UI", Arial, sans-serif;
+}
+
+body {
+  background: linear-gradient(135deg, #b7caa0, #efe7c7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.game-container {
+  background: #fffdf1;
+  padding: 22px;
+  border-radius: 18px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+  text-align: center;
+}
+
+h1 {
+  margin: 0;
+  color: #4a4526;
+  letter-spacing: 1px;
+}
+
+.level-text {
+  margin: 6px 0 12px;
+  font-weight: bold;
+  color: #6b6232;
+}
+
+.controls {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+button {
+  flex: 1;
+  padding: 9px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.home-btn { background: #7b6f2f; color: white; }
+.restart-btn { background: #c47b2a; color: white; }
+.next-btn { background: #4caf50; color: white; display: none; }
+
+button:hover { opacity: 0.85; }
+
+canvas {
+  border: 5px solid #5b5530;
+  border-radius: 10px;
+  background: #ded6ae;
+  margin-top: 8px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="game-container">
+  <h1>SOKOBAN</h1>
+  <div class="level-text" id="levelText">Level 1</div>
+
+  <div class="controls">
+    <button class="home-btn" onclick="goHome()">🏠 Home</button>
+    <button class="restart-btn" onclick="restartGame()">🔄 Restart</button>
+    <button class="next-btn" id="nextBtn" onclick="nextLevel()">➡ Next</button>
+  </div>
+
+  <canvas id="game"></canvas>
+</div>
+
+<script>
+const canvas = document.getElementById("game");
+const ctx = canvas.getContext("2d");
+const grid = 64;
+
+const types = {
+  wall: '#', player: '@', playerOnGoal: '+',
+  block: '$', blockOnGoal: '*',
+  goal: '.', empty: ' '
+};
+
+const levels = [
+`
+ #####
+###   #
+#.@$  #
+### $.#
+#.##$ #
+# # . ##
+#$ *$$.#
+#   .  #
+########
+`,
+`
+########
+#   .  #
+# $$@  #
+#  ##  #
+# .  . #
+#  $$  #
+#   .  #
+########
+`
+];
+
+let currentLevel = 0;
+let cells = [];
+let playerPos = {};
+let playerDir = { row: 0, col: 0 };
+let rAF = null;
+let width = 0;
+
+const wallCanvas = document.createElement("canvas");
+const wctx = wallCanvas.getContext("2d");
+wallCanvas.width = wallCanvas.height = grid;
+
+wctx.fillStyle = "#5b5530";
+wctx.fillRect(0,0,grid,grid);
+wctx.fillStyle = "#a19555";
+wctx.fillRect(1,1,grid-2,20);
+wctx.fillRect(0,23,20,18);
+wctx.fillRect(22,23,42,18);
+wctx.fillRect(0,43,42,20);
+wctx.fillRect(44,43,20,20);
+
+function loadLevel() {
+  cells = [];
+  width = 0;
+  document.getElementById("levelText").textContent = `Level ${currentLevel + 1}`;
+  document.getElementById("nextBtn").style.display = "none";
+
+  levels[currentLevel].split("\n").filter(r => r).forEach((rowData, r) => {
+    cells[r] = [];
+    width = Math.max(width, rowData.length);
+    rowData.split("").forEach((c, col) => {
+      cells[r][col] = c;
+      if (c === types.player || c === types.playerOnGoal)
+        playerPos = { row: r, col };
+    });
+  });
+
+  canvas.width = width * grid;
+  canvas.height = cells.length * grid;
+}
+
+function move(s, e) {
+  const sc = cells[s.row][s.col];
+  const ec = cells[e.row][e.col];
+  const isPlayer = sc === types.player || sc === types.playerOnGoal;
+
+  cells[s.row][s.col] =
+    (sc === types.playerOnGoal || sc === types.blockOnGoal) ? types.goal : types.empty;
+
+  cells[e.row][e.col] =
+    ec === types.goal ? (isPlayer ? types.playerOnGoal : types.blockOnGoal)
+                      : (isPlayer ? types.player : types.block);
+}
+
+function showWin() {
+  cancelAnimationFrame(rAF);
+  ctx.fillStyle = "rgba(0,0,0,0.7)";
+  ctx.fillRect(0, canvas.height/2 - 40, canvas.width, 80);
+  ctx.fillStyle = "white";
+  ctx.font = "32px Arial";
+  ctx.textAlign = "center";
+  ctx.fillText("LEVEL CLEARED!", canvas.width/2, canvas.height/2 + 10);
+  document.getElementById("nextBtn").style.display = "block";
+}
+
+function loop() {
+  rAF = requestAnimationFrame(loop);
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+
+  const r = playerPos.row + playerDir.row;
+  const c = playerPos.col + playerDir.col;
+  const cell = cells[r]?.[c];
+
+  if (cell === types.empty || cell === types.goal) {
+    move(playerPos, {row:r, col:c});
+    playerPos = {row:r, col:c};
+  }
+
+  if (cell === types.block || cell === types.blockOnGoal) {
+    const nr = r + playerDir.row;
+    const nc = c + playerDir.col;
+    if (cells[nr][nc] === types.empty || cells[nr][nc] === types.goal) {
+      move({row:r,col:c},{row:nr,col:nc});
+      move(playerPos,{row:r,col:c});
+      playerPos = {row:r,col:c};
+    }
+  }
+
+  playerDir = {row:0,col:0};
+  let win = true;
+
+  for (let r=0;r<cells.length;r++) {
+    for (let c=0;c<cells[r].length;c++) {
+      const cell = cells[r][c];
+
+      if (cell === types.wall)
+        ctx.drawImage(wallCanvas,c*grid,r*grid);
+
+      if (cell === types.block || cell === types.blockOnGoal) {
+        ctx.fillStyle = cell === types.block ? "#ffbb5b" : "#ba6a15";
+        ctx.fillRect(c*grid,r*grid,grid,grid);
+        if (cell === types.block) win = false;
+      }
+
+      if (cell === types.goal || cell === types.playerOnGoal) {
+        ctx.fillStyle = "#914430";
+        ctx.beginPath();
+        ctx.arc((c+.5)*grid,(r+.5)*grid,10,0,Math.PI*2);
+        ctx.fill();
+      }
+
+      if (cell === types.player || cell === types.playerOnGoal) {
+        ctx.fillStyle = "black";
+        ctx.beginPath();
+        ctx.arc((c+.5)*grid,(r+.3)*grid,8,0,Math.PI*2);
+        ctx.fill();
+        ctx.fillRect((c+.48)*grid,(r+.3)*grid,2,grid/2.5);
+      }
+    }
+  }
+
+  if (win) showWin();
+}
+
+document.addEventListener("keydown", e => {
+  if (e.key==="ArrowLeft") playerDir.col=-1;
+  if (e.key==="ArrowRight") playerDir.col=1;
+  if (e.key==="ArrowUp") playerDir.row=-1;
+  if (e.key==="ArrowDown") playerDir.row=1;
+});
+
+function restartGame() {
+  cancelAnimationFrame(rAF);
+  loadLevel();
+  requestAnimationFrame(loop);
+}
+
+function nextLevel() {
+  currentLevel = (currentLevel + 1) % levels.length;
+  restartGame();
+}
+
+function goHome() {
+  window.location.href = "Gamepage.html";
+}
+
+loadLevel();
+requestAnimationFrame(loop);
+</script>
+
+</body>
+</html>

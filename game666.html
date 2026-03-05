@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pixel Puzzle Game</title>
+<style>
+  body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(to bottom, #a8edea, #fed6e3);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    overflow: hidden;
+    position: relative;
+  }
+
+  /* Floating background particles */
+  .particle {
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: 50%;
+    animation: floatParticles linear infinite;
+  }
+
+  @keyframes floatParticles {
+    0% { transform: translateY(0) translateX(0); opacity: 1; }
+    100% { transform: translateY(-100vh) translateX(50px); opacity: 0; }
+  }
+
+  .container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+
+  /* Side panels */
+  .side-design {
+    width: 120px;
+    height: 500px;
+    margin: 0 20px;
+    border-radius: 25px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 6px 30px rgba(0,0,0,0.3);
+    background: linear-gradient(45deg, #ffecd2, #fcd0b0, #ffecd2);
+    background-size: 400% 400%;
+    animation: gradientGlow 6s ease infinite, float 3s ease-in-out infinite alternate;
+    transition: transform 0.3s;
+  }
+
+  @keyframes gradientGlow {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+
+  @keyframes float {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(20px); }
+  }
+
+  /* Layered interactive shapes */
+  .side-shape {
+    position: absolute;
+    border-radius: 50%;
+    opacity: 0.6;
+    box-shadow: 0 0 15px rgba(255,255,255,0.5);
+    transition: transform 0.3s, box-shadow 0.3s;
+    animation: floatDecor 4s ease-in-out infinite alternate;
+  }
+  .shape1 { width: 40px; height: 40px; top: 20px; left: 10px; background: #ff8a80; }
+  .shape2 { width: 60px; height: 60px; bottom: 40px; right: 15px; background: #82b1ff; }
+  .shape3 { width: 20px; height: 80px; top: 100px; left: 40px; background: #ffd180; border-radius: 10px; }
+  .shape4 { width: 15px; height: 15px; bottom: 200px; right: 30px; background: #b9f6ca; }
+
+  @keyframes floatDecor {
+    0% { transform: translateY(0) rotate(0deg); }
+    100% { transform: translateY(15px) rotate(20deg); }
+  }
+
+  /* Game area */
+  .game-area {
+    text-align: center;
+    background: rgba(255,255,255,0.95);
+    padding: 30px 50px;
+    border-radius: 25px;
+    box-shadow: 0 6px 30px rgba(0,0,0,0.35);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+  }
+
+  h1 { margin-bottom: 10px; color: #333; text-shadow: 1px 1px 3px rgba(0,0,0,0.2); }
+
+  #puzzle-container {
+    display: grid;
+    grid-gap: 5px;
+    margin: 20px auto;
+    border-radius: 12px;
+  }
+
+  .tile {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #ffecd2;
+    border-radius: 8px;
+    font-size: 24px;
+    cursor: pointer;
+    user-select: none;
+    transition: background 0.3s, transform 0.3s;
+  }
+  .tile:hover { background-color: #fcd0b0; transform: scale(1.05); }
+  .empty { background-color: transparent; cursor: default; }
+
+  button {
+    margin: 5px;
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.2s;
+  }
+  button:hover { transform: scale(1.05); }
+
+  #restart-btn { background-color: #f28c8c; color: white; }
+  #home-btn { background-color: #8cc4f2; color: white; }
+  #shuffle-btn { background-color: #8cf2a0; color: white; }
+
+  #level-select {
+    margin: 10px;
+    padding: 8px 12px;
+    font-size: 16px;
+    border-radius: 8px;
+  }
+
+  #timer {
+    font-size: 20px;
+    margin-top: 10px;
+    font-weight: bold;
+    color: #333;
+  }
+
+  /* Congrats modal */
+  #congrats-modal {
+    display: none;
+    position: fixed;
+    top:0; left:0;
+    width:100%;
+    height:100%;
+    background: rgba(0,0,0,0.6);
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+  }
+
+  #congrats-modal .content {
+    background: white;
+    padding: 30px 50px;
+    border-radius: 15px;
+    text-align: center;
+    box-shadow: 0 6px 25px rgba(0,0,0,0.35);
+  }
+  #congrats-modal h2 { margin-bottom: 15px; color: #27ae60; }
+  #congrats-modal button { background-color: #27ae60; color: white; padding: 10px 20px; border-radius: 8px; }
+
+  /* Confetti with trail */
+  .confetti {
+    position: fixed;
+    width: 8px;
+    height: 8px;
+    z-index: 9999;
+    pointer-events: none;
+    border-radius: 50%;
+    box-shadow: 0 0 6px rgba(255,255,255,0.9);
+    animation: confettiFall linear forwards;
+  }
+
+  @keyframes confettiFall {
+    0% { transform: translateY(0) rotate(0deg); }
+    100% { transform: translateY(100vh) rotate(720deg); }
+  }
+</style>
+</head>
+<body>
+
+<script>
+  for (let i=0; i<50; i++){
+    const particle = document.createElement('div');
+    particle.className = 'particle';
+    particle.style.left = `${Math.random()*100}vw`;
+    particle.style.top = `${Math.random()*100}vh`;
+    particle.style.width = particle.style.height = `${Math.random()*4+2}px`;
+    particle.style.animationDuration = `${Math.random()*5 + 5}s`;
+    document.body.appendChild(particle);
+  }
+</script>
+
+<div class="container">
+  <div class="side-design">
+    <div class="side-shape shape1"></div>
+    <div class="side-shape shape2"></div>
+    <div class="side-shape shape3"></div>
+    <div class="side-shape shape4"></div>
+  </div>
+
+  <div class="game-area">
+    <h1>Pixel Puzzle Game</h1>
+    <select id="level-select">
+      <option value="3">Easy (3x3)</option>
+      <option value="4" selected>Medium (4x4)</option>
+      <option value="5">Hard (5x5)</option>
+    </select>
+    <div id="timer">Time: 0s</div>
+    <div id="puzzle-container"></div>
+    <div>
+      <button id="shuffle-btn">Shuffle</button>
+      <button id="restart-btn">Restart</button>
+      <button id="home-btn" onclick="window.location.href='GamePage.html'">Home</button>
+    </div>
+  </div>
+
+  <div class="side-design">
+    <div class="side-shape shape1"></div>
+    <div class="side-shape shape2"></div>
+    <div class="side-shape shape3"></div>
+    <div class="side-shape shape4"></div>
+  </div>
+</div>
+
+<div id="congrats-modal">
+  <div class="content">
+    <h2>🎉 Congratulations! 🎉</h2>
+    <p>You solved the puzzle in <span id="final-time">0</span> seconds!</p>
+    <button onclick="closeCongrats()">Close</button>
+  </div>
+</div>
+
+<script>
+const container = document.getElementById('puzzle-container');
+const shuffleBtn = document.getElementById('shuffle-btn');
+const restartBtn = document.getElementById('restart-btn');
+const levelSelect = document.getElementById('level-select');
+const timerDisplay = document.getElementById('timer');
+const congratsModal = document.getElementById('congrats-modal');
+const finalTimeSpan = document.getElementById('final-time');
+const sidePanels = document.querySelectorAll('.side-design');
+let gridSize = parseInt(levelSelect.value);
+let tiles = [];
+let timer = 0;
+let interval = null;
+
+function initPuzzle() {
+  tiles = Array.from({ length: gridSize * gridSize - 1 }, (_, i) => i + 1).concat(null);
+  container.style.gridTemplateColumns = `repeat(${gridSize}, 80px)`;
+  renderPuzzle();
+  resetTimer();
+}
+
+function renderPuzzle() {
+  container.innerHTML = '';
+  tiles.forEach((tile, index) => {
+    const div = document.createElement('div');
+    div.className = tile ? 'tile' : 'tile empty';
+    div.textContent = tile || '';
+    div.style.width = div.style.height = `${80}px`;
+    div.onclick = () => moveTile(index);
+    container.appendChild(div);
+  });
+}
+
+function moveTile(index) {
+  const emptyIndex = tiles.indexOf(null);
+  const validMoves = [index - 1, index + 1, index - gridSize, index + gridSize];
+  if (index % gridSize === 0) validMoves.splice(validMoves.indexOf(index - 1), 1);
+  if (index % gridSize === gridSize - 1) validMoves.splice(validMoves.indexOf(index + 1), 1);
+  if (validMoves.includes(emptyIndex)) {
+    [tiles[index], tiles[emptyIndex]] = [tiles[emptyIndex], tiles[index]];
+    renderPuzzle();
+    triggerSidePanels();
+    checkWin();
+  }
+}
+
+function triggerSidePanels() {
+  sidePanels.forEach(panel => {
+    panel.style.transform = 'scale(1.12) rotate(8deg)';
+    panel.querySelectorAll('.side-shape').forEach(shape => {
+      shape.style.transform = `translate(${Math.random()*20-10}px,${Math.random()*20-10}px) rotate(${Math.random()*45-22}deg)`;
+      shape.style.boxShadow = `0 0 ${Math.random()*20 + 10}px ${Math.random()*10}px rgba(255,255,255,0.8)`;
+    });
+    setTimeout(() => {
+      panel.style.transform = '';
+      panel.querySelectorAll('.side-shape').forEach(shape => { shape.style.transform = ''; shape.style.boxShadow='0 0 15px rgba(255,255,255,0.5)'; });
+    }, 300);
+  });
+}
+
+function shuffle() {
+  for (let i = tiles.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [tiles[i], tiles[j]] = [tiles[j], tiles[i]];
+  }
+  renderPuzzle();
+}
+
+function restart() { initPuzzle(); }
+
+function checkWin() {
+  if (tiles.slice(0, -1).every((tile, i) => tile === i + 1)) {
+    stopTimer();
+    finalTimeSpan.textContent = timer;
+    showCongrats();
+    launchConfetti();
+  }
+}
+
+function goHome() { window.location.href = '/'; }
+function startTimer() { stopTimer(); timer = 0; interval = setInterval(() => { timer++; timerDisplay.textContent = `Time: ${timer}s`; }, 1000); }
+function stopTimer() { clearInterval(interval); }
+function resetTimer() { stopTimer(); timer=0; timerDisplay.textContent=`Time: ${timer}s`; startTimer(); }
+function showCongrats() { congratsModal.style.display='flex'; }
+function closeCongrats() { congratsModal.style.display='none'; }
+
+function launchConfetti() {
+  for (let i=0;i<150;i++){
+    const confetti=document.createElement('div');
+    confetti.className='confetti';
+    confetti.style.backgroundColor=`hsl(${Math.random()*360},70%,60%)`;
+    confetti.style.left=`${Math.random()*100}vw`;
+    confetti.style.width=confetti.style.height=`${Math.random()*8+6}px`;
+    confetti.style.animationDuration=`${Math.random()*3+2}s`;
+    document.body.appendChild(confetti);
+
+    const trail=document.createElement('div');
+    trail.style.position='fixed';
+    trail.style.left=confetti.style.left;
+    trail.style.top='0';
+    trail.style.width='2px';
+    trail.style.height='100vh';
+    trail.style.background=`linear-gradient(to bottom, ${confetti.style.backgroundColor}, transparent)`;
+    trail.style.zIndex=9998;
+    document.body.appendChild(trail);
+
+    setTimeout(()=>{confetti.remove();trail.remove();},4000);
+  }
+}
+
+shuffleBtn.onclick=shuffle;
+restartBtn.onclick=restart;
+levelSelect.onchange=()=>{ gridSize=parseInt(levelSelect.value); initPuzzle(); }
+
+initPuzzle();
+</script>
+</body>
+</html>
